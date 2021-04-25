@@ -8,8 +8,6 @@ kitchen:
   generatedFields:
     date:
       type: date
-      options:
-        format: "timestamp-seconds"
   moderation: true
   name: "kitchen.ozymandias.tk"
   path: "_data/comments/{options.slug}"
