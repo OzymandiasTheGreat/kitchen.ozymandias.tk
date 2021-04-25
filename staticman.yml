@@ -1,5 +1,5 @@
 kitchen:
-  allowedFields: ["name", "email", "url", "message"]
+  allowedFields: ["name", "email", "url", "message", "reply"]
   allowedOrigins: ["localhost", "kitchen.ozymandias.tk"]
   branch: "gh_pages"
   commitMessage: "New Staticman comment on kitchen.ozymandias.tk"
@@ -14,3 +14,5 @@ kitchen:
   name: "kitchen.ozymandias.tk"
   path: "_data/comments/{options.slug}"
   requiredFields: ["name", "email", "message"]
+  transforms:
+    email: "md5"
