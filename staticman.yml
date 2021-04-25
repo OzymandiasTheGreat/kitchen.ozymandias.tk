@@ -1,0 +1,16 @@
+kitchen:
+  allowedFields: ["name", "email", "url", "message"]
+  allowedOrigins: ["localhost", "kitchen.ozymandias.tk"]
+  branch: "gh_pages"
+  commitMessage: "New Staticman comment on kitchen.ozymandias.tk"
+  filename: "entry{@timestamp}"
+  format: "yaml"
+  generatedFields:
+    date:
+      type: date
+      options:
+        format: "timestamp-seconds"
+  moderation: true
+  name: "kitchen.ozymandias.tk"
+  path: "_data/comments/{options.slug}"
+  requiredFields: ["name", "email", "message"]
