@@ -26,7 +26,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   <br>
   Mano nuotykiai (ir ne tik) virtuvėje, bei mano mėgiamiausi receptai.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: https://kitchen.ozymandias.tk/ # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: ""
 github_username:  OzymandiasTheGreat
 whatsapp_number:  37064020967

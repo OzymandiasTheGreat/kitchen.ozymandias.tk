@@ -8,7 +8,7 @@ kitchen:
   generatedFields:
     date:
       type: date
-  moderation: false
+  moderation: true
   name: "kitchen.ozymandias.tk"
   path: "_data/comments/{options.slug}"
   requiredFields: ["name", "email", "message"]
