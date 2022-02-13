@@ -1,0 +1,51 @@
+html {
+	height: 100% !important;
+	color: #efefef;
+	background-color: #212121;
+}
+
+body {
+	height: 100% !important;
+	overflow: hidden !important;
+}
+
+#__next {
+	height: 100% !important;
+	display: flex !important;
+}
+
+ul {
+	display: block !important;
+}
+
+li {
+	display: list-item !important;
+	margin-left: 15px !important;
+}
+
+li::marker {
+	content: "🍏 ";
+}
+
+a {
+	color: #4fc3f7 !important;
+}
+
+table {
+	display: table !important;
+	border-collapse: collapse !important;
+}
+
+tr {
+	display: table-row !important;
+	border-collapse: collapse !important;
+}
+
+td {
+	display: table-cell !important;
+	border-collapse: collapse !important;
+}
+
+div[id^=footnote] {
+	order: 10000;
+}

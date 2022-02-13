@@ -21,7 +21,7 @@ export default function App() {
 	return (
 		<View style={[styles.container]}>
 			<Link passHref href={{ query: query?.lang === "en" ? ltq : enq }}>
-				<Text style={[theme.text, styles.text]}>{t("hi")} 👋</Text>
+				<Text style={[theme?.text, styles.text]}>{t("hi")} 👋</Text>
 			</Link>
 		</View>
 	);
