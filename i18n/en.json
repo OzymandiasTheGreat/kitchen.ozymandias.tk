@@ -1,3 +1,17 @@
 {
-	"hi": "Hello there"
+	"hi": "Hello there",
+	"site": {
+		"title": "Kitchen Escapades",
+		"main": "Main Website"
+	},
+	"post": {
+		"edited": "Edited on ",
+		"published": {
+			"noedit": "Published on ",
+			"edited": "Originally published on "
+		},
+		"byline": "by ",
+		"via": "Via ",
+		"tag": "Tagged: "
+	}
 }

@@ -1,3 +1,17 @@
 {
-	"hi": "Sveiki"
+	"hi": "Sveiki",
+	"site": {
+		"title": "Virtuvės Nuotykiai",
+		"main": "Pagrindinis Puslapis"
+	},
+	"post": {
+		"edited": "Atnaujinta ",
+		"published": {
+			"noedit": "Publikuota ",
+			"edited": "Pirma kartą publikuota "
+		},
+		"byline": " ",
+		"via": "Šaltinis: ",
+		"tag": "Pažymėta: "
+	}
 }

@@ -201,6 +201,12 @@ const useTheme = (): typeof Theme["dark"] | null => {
 		theme.html.contentWidth = contentWidth;
 		theme.image.width = contentWidth;
 		theme.image.height = contentWidth * (9 / 16);
+		if (width <= 600) {
+			theme.article.width = "100%";
+			theme.article.borderRadius = 0;
+			theme.article.backgroundColor =
+				(theme.article.backgroundColor as string).slice(0, 7) + "ee";
+		}
 		setTheme(theme);
 	}, [scheme, loaded, width]);
 

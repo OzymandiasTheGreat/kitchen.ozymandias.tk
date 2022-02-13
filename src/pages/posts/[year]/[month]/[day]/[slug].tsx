@@ -6,19 +6,16 @@ import type { Root } from "mdast";
 import type { JsonValue } from "type-fest";
 import { parseMarkdown } from "../../../../../util/markdown";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
-	Animated,
 	Image,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
 	ScrollView,
-	StyleSheet,
 	Text,
 	View,
 } from "react-native";
 import { GetStaticPaths, GetStaticProps } from "next";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
 	useTranslation,
@@ -38,25 +35,94 @@ interface Serializable {
 interface PostMatter extends Serializable {
 	title: string;
 	publish: string;
-	edited?: string;
+	edited: string | null;
 	tags: string[];
 	excerpt: string;
 	content: Root;
-	image?: {
+	image: {
 		uri: string;
 		copyright: string;
-	};
-	source?: string;
+	} | null;
+	source: string | null;
 }
 
 interface Post {
 	[lang: string]: PostMatter;
 }
 
+const PostDate: React.FC<{
+	publish: string;
+	edited: string | null;
+	lang: string;
+}> = ({ publish, edited, lang }) => {
+	const theme = useTheme();
+	const { t } = useTranslation();
+
+	if (edited) {
+		return (
+			<P
+				style={[
+					theme?.text,
+					{ fontSize: (theme?.text.fontSize || 18) * 0.7 },
+				]}>
+				<Text>{t("post.edited")}</Text>
+				<Text
+					style={{
+						fontFamily: theme?.text.fontBold,
+						fontWeight: "bold",
+					}}>
+					{new Date(edited).toLocaleString(lang, {
+						year: "2-digit",
+						month: "numeric",
+						day: "numeric",
+						hour: "numeric",
+						minute: "numeric",
+					})}
+				</Text>
+				{"\n"}
+				<Text>{t("post.published.edited")}</Text>
+				<Text
+					style={{
+						fontFamily: theme?.text.fontBold,
+						fontWeight: "bold",
+					}}>
+					{new Date(publish).toLocaleString(lang, {
+						year: "2-digit",
+						month: "short",
+						day: "numeric",
+					})}
+				</Text>
+			</P>
+		);
+	}
+	return (
+		<P
+			style={[
+				theme?.text,
+				{ fontSize: (theme?.text.fontSize || 18) * 0.7 },
+			]}>
+			<Text>{t("post.published.noedit")}</Text>
+			<Text
+				style={{
+					fontFamily: theme?.text.fontBold,
+					fontWeight: "bold",
+				}}>
+				{new Date(publish).toLocaleString(lang, {
+					year: "numeric",
+					month: "long",
+					day: "2-digit",
+					hour: "2-digit",
+					minute: "2-digit",
+				})}
+			</Text>
+		</P>
+	);
+};
+
 const Post: React.FC<{ post: Post }> = ({ post }) => {
 	const theme = useTheme();
-	const [query] = useLanguageQuery();
 	const { lang } = useSelectedLanguage();
+	const { t } = useTranslation();
 	const [headerOpaque, setHeaderOpaque] = useState(false);
 
 	const headerOpaqueCallback = (
@@ -102,7 +168,7 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 												0.7,
 										},
 									]}>
-									by{" "}
+									{t("post.byline")}
 									<Text
 										style={[
 											theme?.text,
@@ -118,21 +184,10 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 										Tomas Ravinskas
 									</Text>
 								</Text>
-								<Text
-									style={[
-										theme?.text,
-										{
-											fontSize:
-												(theme?.text.fontSize || 18) *
-												0.7,
-											fontWeight: "bold",
-											fontFamily: theme?.text.fontBold,
-										},
-									]}>
-									{new Date(
-										content.edited || content.publish,
-									).toLocaleString(contentLang)}
-								</Text>
+								<PostDate
+									lang={contentLang}
+									publish={content.publish}
+									edited={content.edited}></PostDate>
 							</View>
 							{content.image && (
 								<View
@@ -165,6 +220,7 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 								}}></HR>
 							{content.source && (
 								<P
+									nativeID="via"
 									style={[
 										theme?.text,
 										{
@@ -173,13 +229,14 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 												0.85,
 										},
 									]}>
-									Via{" "}
+									{t("post.via")}
 									<A href={content.source}>
 										{content.source}
 									</A>
 								</P>
 							)}
 							<P
+								nativeID="tag"
 								style={[
 									theme?.text,
 									{
@@ -189,7 +246,7 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 										opacity: 0.6,
 									},
 								]}>
-								Tagged:{" "}
+								{t("post.tag")}
 								{content.tags.map((tag) => (
 									<Link
 										key={tag}
@@ -305,6 +362,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		post[lang] = {
 			title: matt.data.title,
 			publish: matt.data.publish,
+			edited: matt.data.edited || null,
 			tags: matt.data.tags.split(" "),
 			image: matt.data.image || null,
 			source: matt.data.source || null,

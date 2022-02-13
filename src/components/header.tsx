@@ -8,7 +8,11 @@ import React, {
 import Link from "next/link";
 import { Animated, Image, Text, View } from "react-native";
 import { A, Header } from "@expo/html-elements";
-import { useSelectedLanguage, useLanguageQuery } from "next-export-i18n";
+import {
+	useSelectedLanguage,
+	useLanguageQuery,
+	useTranslation,
+} from "next-export-i18n";
 import { translations } from "../../i18n/index";
 import useTheme from "../pages/_theme";
 
@@ -40,7 +44,9 @@ const BlogHeader: React.FC<{
 		],
 	});
 	const { lang } = useSelectedLanguage();
+	const { t } = useTranslation();
 	const [query] = useLanguageQuery();
+	const params = new URLSearchParams({ lang }).toString();
 
 	useEffect(
 		() => {
@@ -76,15 +82,7 @@ const BlogHeader: React.FC<{
 					width: 320,
 				}}>
 				<Link passHref href={{ pathname: "/", query: { lang } }}>
-					<A
-						style={[
-							theme?.headerText,
-							{
-								fontSize:
-									(theme?.headerText.fontSize || 20) *
-									(opaque ? 0.8 : 1),
-							},
-						]}>
+					<A>
 						<View
 							style={{
 								flexDirection: "row",
@@ -104,23 +102,15 @@ const BlogHeader: React.FC<{
 										fontSize:
 											(theme?.headerText.fontSize ||
 												20) * (opaque ? 0.8 : 1),
+										marginTop: 3,
 									},
 								]}>
-								Kitchen Escapades
+								{t("site.title")}
 							</Text>
 						</View>
 					</A>
 				</Link>
-				<A
-					href="https://tomasrav.me/"
-					style={[
-						theme?.headerText,
-						{
-							fontSize:
-								(theme?.headerText.fontSize || 20) *
-								(opaque ? 0.8 : 1),
-						},
-					]}>
+				<A href={`https://tomasrav.me/?${params}`}>
 					<View
 						style={{ flexDirection: "row", alignItems: "center" }}>
 						{/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -139,9 +129,10 @@ const BlogHeader: React.FC<{
 									fontSize:
 										(theme?.headerText.fontSize || 20) *
 										(opaque ? 0.8 : 1),
+									marginTop: 3,
 								},
 							]}>
-							Main Website
+							{t("site.main")}
 						</Text>
 					</View>
 				</A>

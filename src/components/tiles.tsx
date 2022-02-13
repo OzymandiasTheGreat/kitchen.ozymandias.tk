@@ -91,8 +91,8 @@ class Tiles {
 			this.ctx.fillRect(
 				0,
 				0,
-				(this.width || 0) * 3,
-				(this.height || 0) * 3,
+				(this.width || 0) * 5,
+				(this.height || 0) * 5,
 			);
 			this.patternTwo.setTransform(
 				new DOMMatrix([
@@ -111,8 +111,8 @@ class Tiles {
 			this.ctx.fillRect(
 				0,
 				0,
-				(this.width || 0) * 3,
-				(this.height || 0) * 3,
+				(this.width || 0) * 5,
+				(this.height || 0) * 5,
 			);
 			this.ctx.restore();
 			this.now = Date.now();
