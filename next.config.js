@@ -9,9 +9,8 @@ const withImages = require("next-images");
 const withFonts = require("next-fonts");
 
 module.exports = withPlugins([
-	withPreact,
 	[
-		withRNWeb,
+		withPreact,
 		{
 			webpack: (config) => {
 				config.resolve.alias = {
@@ -23,6 +22,7 @@ module.exports = withPlugins([
 			},
 		},
 	],
+	withRNWeb,
 	withImages,
 	withFonts,
 	[
