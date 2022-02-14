@@ -5,6 +5,7 @@ import {
 	BlockQuote,
 	BR,
 	Code,
+	Del,
 	EM,
 	H1,
 	H2,
@@ -15,7 +16,6 @@ import {
 	HR,
 	LI,
 	P,
-	S,
 	Strong,
 	Table,
 	TD,
@@ -104,28 +104,24 @@ const getComponent = ({
 			return Root;
 		case "paragraph":
 			const Paragraph: React.FC = ({ children }) => (
-				<P
-					style={{
-						color: theme?.text.color,
-						fontFamily: theme?.text.fontFamily || "sans-serif",
-						fontSize: theme?.text.fontSize,
-						marginHorizontal: 0,
-						marginTop: 0,
-						marginBottom: 20,
-					}}>
-					{children}
-				</P>
+				<P style={[theme?.text.body]}>{children}</P>
 			);
 			return Paragraph;
 		case "heading":
 			const index = (node as AST.Heading).depth - 1;
 			const size = [
-				(theme?.text.fontSize || 18) + 10,
-				(theme?.text.fontSize || 18) + 8,
-				(theme?.text.fontSize || 18) + 6,
-				(theme?.text.fontSize || 18) + 4,
-				(theme?.text.fontSize || 18) + 2,
-				theme?.text.fontSize || 18,
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h1multiplier || 1),
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h2multiplier || 0.95),
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h3multiplier || 0.9),
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h4multiplier || 0.85),
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h5multiplier || 0.8),
+				(theme?.text.heading.fontSize || 28) *
+					(theme?.markdown.heading.h6multiplier || 0.75),
 			][index];
 			const Component = [H1, H2, H3, H4, H5, H6][index];
 			const slug = getHeadingSlug((node as AST.Heading).children);
@@ -133,8 +129,9 @@ const getComponent = ({
 				<Component
 					nativeID={slug}
 					style={{
-						color: theme?.heading.color,
-						fontFamily: theme?.heading.fontFamily || "sans-serif",
+						color: theme?.text.heading.color,
+						fontFamily:
+							theme?.text.heading.fontFamily || "sans-serif",
 						fontSize: size,
 						marginHorizontal: 0,
 						marginTop: 0,
@@ -146,16 +143,14 @@ const getComponent = ({
 			return Heading;
 		case "thematicBreak":
 			const ThematicBreak: React.FC = () => (
-				<HR
-					style={{
-						width: "90%",
-						backgroundColor: theme?.text.color,
-					}}></HR>
+				<HR style={[theme?.markdown.hr]}></HR>
 			);
 			return ThematicBreak;
 		case "blockquote":
 			const Blockquote: React.FC = ({ children }) => (
-				<BlockQuote style={[theme?.blockquote]}>{children}</BlockQuote>
+				<BlockQuote style={[theme?.markdown.blockquote]}>
+					{children}
+				</BlockQuote>
 			);
 			return Blockquote;
 		case "list":
@@ -168,10 +163,10 @@ const getComponent = ({
 			const HTML: React.FC<{ value: string }> = ({ value }) => (
 				<RenderHTML
 					source={{ html: value }}
-					contentWidth={theme?.html.contentWidth || 600}
-					fallbackFonts={theme?.html.fallbackFont}
+					contentWidth={theme?.markdown.html.contentWidth || 600}
+					fallbackFonts={theme?.markdown.html.fallbackFonts}
 					defaultTextProps={{
-						style: theme?.html.props,
+						style: theme?.markdown.html.style,
 					}}></RenderHTML>
 			);
 			return HTML;
@@ -182,11 +177,8 @@ const getComponent = ({
 			}) => (
 				<SyntaxHighlighter
 					language={lang || ""}
-					fontFamily={theme?.text.fontCode || "monospace"}
-					fontSize={
-						(theme?.text.fontSize || 18) *
-						(theme?.code.fontSizeMultiplier || 0.9)
-					}
+					fontFamily={theme?.text.code.fontFamily || "monospace"}
+					fontSize={theme?.text.code.fontSize || 15}
 					highlighter="prism"
 					style={theme?.scheme === "dark" ? atomDark : ghcolors}>
 					{value}
@@ -205,14 +197,14 @@ const getComponent = ({
 			return TextNode;
 		case "emphasis":
 			const Em: React.FC = ({ children }) => (
-				<EM style={{ fontFamily: theme?.text.fontItalic }}>
+				<EM style={[{ fontFamily: theme?.text.emphasis.fontFamily }]}>
 					{children}
 				</EM>
 			);
 			return Em;
 		case "strong":
 			const StrongNode: React.FC = ({ children }) => (
-				<Strong style={{ fontFamily: theme?.text.fontBold }}>
+				<Strong style={{ fontFamily: theme?.text.strong.fontFamily }}>
 					{children}
 				</Strong>
 			);
@@ -221,11 +213,9 @@ const getComponent = ({
 			const InlineCode: React.FC<{ value: string }> = ({ value }) => (
 				<Code
 					style={{
-						fontFamily: theme?.text.fontCode,
-						fontSize:
-							(theme?.text.fontSize || 18) *
-							(theme?.code.fontSizeMultiplier || 0.9),
-						backgroundColor: theme?.code.backgroundColor,
+						fontFamily: theme?.text.code.fontFamily,
+						fontSize: theme?.text.code.fontSize || 15,
+						backgroundColor: theme?.text.code.backgroundColor,
 					}}>
 					{value}
 				</Code>
@@ -252,7 +242,7 @@ const getComponent = ({
 						width: imgDimensions.width,
 						height: imgDimensions.height,
 					}}
-					resizeMode="contain"></Image>
+					style={[theme?.markdown.image]}></Image>
 			);
 			return Img;
 		case "linkReference":
@@ -277,7 +267,7 @@ const getComponent = ({
 						width: imgRefDimensions.width,
 						height: imgRefDimensions.height,
 					}}
-					resizeMode="contain"></Image>
+					style={[theme?.markdown.image]}></Image>
 			);
 			return ImageReference;
 		case "footnoteDefinition":
@@ -287,22 +277,10 @@ const getComponent = ({
 			}> = ({ children, identifier, label }) => (
 				<P
 					nativeID={`footnote-${identifier}`}
-					style={{
-						color: theme?.text.color,
-						fontFamily: theme?.text.fontFamily || "sans-serif",
-						fontSize: (theme?.text.fontSize || 18) - 4,
-						opacity: 0.7,
-						marginHorizontal: 0,
-						marginTop: 0,
-						marginBottom: 15,
-					}}>
+					style={[theme?.markdown.footnote.container]}>
 					<A
 						href={`#reference-${identifier}`}
-						style={{
-							fontSize: (theme?.text.fontSize || 18) - 4,
-							position: "relative",
-							top: -(theme?.text.fontSize || 18) / 2,
-						}}>
+						style={[theme?.markdown.footnote.definition]}>
 						[{label}]
 					</A>
 					: {children}
@@ -317,57 +295,32 @@ const getComponent = ({
 				<A
 					href={`#footnote-${identifier}`}
 					nativeID={`reference-${identifier}`}
-					style={{
-						fontSize: (theme?.text.fontSize || 18) - 8,
-						position: "relative",
-						top: -(theme?.text.fontSize || 18) / 2,
-					}}>
+					style={[theme?.markdown.footnote.reference]}>
 					[{label}]
 				</A>
 			);
 			return FootnoteReference;
 		case "table":
 			const TableNode: React.FC = ({ children }) => (
-				<Table
-					style={{
-						alignSelf: "flex-start",
-						borderColor: theme?.text.color,
-						borderWidth: 2,
-						marginBottom: 45,
-					}}>
-					{children}
-				</Table>
+				<Table style={[theme?.markdown.table.style]}>{children}</Table>
 			);
 			return TableNode;
 		case "tableRow":
 			const TableRow: React.FC = ({ children }) => (
-				<TR style={{ borderColor: theme?.text.color, borderWidth: 2 }}>
-					{children}
-				</TR>
+				<TR style={[theme?.markdown.table.row]}>{children}</TR>
 			);
 			return TableRow;
 		case "tableCell":
 			const TableCell: React.FC = ({ children }) => (
-				<TD
-					style={{
-						paddingVertical: 5,
-						paddingHorizontal: 10,
-						borderColor: theme?.text.color,
-						borderWidth: 2,
-					}}>
-					<Text
-						style={{
-							color: theme?.text.color,
-							fontFamily: theme?.text.fontFamily,
-							fontSize: theme?.text.fontSize,
-						}}>
+				<TD style={[theme?.markdown.table.cell]}>
+					<Text style={[theme?.markdown.table.text]}>
 						{children}
 					</Text>
 				</TD>
 			);
 			return TableCell;
 		case "delete":
-			const Delete: React.FC = ({ children }) => <S>{children}</S>;
+			const Delete: React.FC = ({ children }) => <Del>{children}</Del>;
 			return Delete;
 		default:
 			console.warn("Unhandled node", node.type);

@@ -1,13 +1,7 @@
-import React, {
-	MutableRefObject,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Animated, Image, Text, View } from "react-native";
-import { A, Header } from "@expo/html-elements";
+import { Animated, Image, Text, View, ViewStyle } from "react-native";
+import { A, Header, P } from "@expo/html-elements";
 import {
 	useSelectedLanguage,
 	useLanguageQuery,
@@ -15,6 +9,7 @@ import {
 } from "next-export-i18n";
 import { translations } from "../../i18n/index";
 import useTheme from "../pages/_theme";
+import { randInt } from "../util/random";
 
 const languages = Object.keys(translations);
 const flags: Record<string, string> = {
@@ -23,24 +18,55 @@ const flags: Record<string, string> = {
 };
 const AnimatedHeader = Animated.createAnimatedComponent(Header);
 
+const Profile: React.FC<{ visible: boolean }> = ({ visible }) => {
+	const [index] = useState(randInt(1, 10));
+	const { t } = useTranslation();
+	const theme = useTheme();
+
+	return (
+		<View style={[theme?.profile.container]}>
+			{/* eslint-disable-next-line jsx-a11y/alt-text */}
+			<Image
+				source={{
+					uri: `/profile/${index}.jpg`,
+				}}
+				style={[
+					theme?.profile.image,
+					,
+					{ display: visible ? "flex" : "none" },
+				]}></Image>
+			<P
+				style={[
+					theme?.text.heading,
+					theme?.profile.text,
+					,
+					{ display: visible ? "flex" : "none" },
+				]}>
+				{t("site.tagline")}
+			</P>
+		</View>
+	);
+};
+
 const BlogHeader: React.FC<{
 	opaque: boolean;
-}> = ({ opaque }) => {
+	style?: ViewStyle;
+}> = ({ opaque, style }) => {
 	const theme = useTheme();
 	const backgroundAnimation = useRef(new Animated.Value(0)).current;
 	const backgroundColor = backgroundAnimation.interpolate({
 		inputRange: [0, 1],
 		outputRange: [
-			theme?.headerContainer.backgroundColorOut as string,
-			theme?.headerContainer.backgroundColorIn as string,
+			theme?.header.transparent.backgroundColor as string,
+			theme?.header.opaque.backgroundColor as string,
 		],
 	});
-	const heightAnimation = useRef(new Animated.Value(1)).current;
+	const heightAnimation = useRef(new Animated.Value(0)).current;
 	const height = heightAnimation.interpolate({
 		inputRange: [0, 1],
 		outputRange: [
-			theme?.headerContainer.minHeight as number,
-			theme?.headerContainer.maxHeight as number,
+			theme?.header.transparent.height as number,
+			theme?.header.opaque.height as number,
 		],
 	});
 	const { lang } = useSelectedLanguage();
@@ -52,12 +78,12 @@ const BlogHeader: React.FC<{
 		() => {
 			Animated.timing(backgroundAnimation, {
 				toValue: +opaque,
-				duration: 200,
+				duration: 300,
 				useNativeDriver: false,
 			}).start();
 			Animated.timing(heightAnimation, {
-				toValue: +!opaque,
-				duration: 350,
+				toValue: +opaque,
+				duration: 300,
 				useNativeDriver: false,
 			}).start();
 		},
@@ -68,42 +94,33 @@ const BlogHeader: React.FC<{
 	return (
 		<AnimatedHeader
 			style={[
-				theme?.headerContainer,
+				theme?.header.style,
+				style,
 				{
 					backgroundColor,
 					height,
 				},
 			]}>
-			<View
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-between",
-					width: 320,
-				}}>
+			<Profile visible={opaque}></Profile>
+			<View style={[theme?.header.inner]}>
 				<Link passHref href={{ pathname: "/", query: { lang } }}>
 					<A>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-							}}>
+						<View style={[theme?.header.link]}>
 							{/* eslint-disable-next-line jsx-a11y/alt-text */}
 							<Image
 								source={{
 									uri: "/favicon.svg",
 								}}
-								style={[theme?.headerIcon, { marginRight: 5 }]}
+								style={[
+									theme?.header.icon,
+									{ marginRight: 5 },
+								]}
 							/>
 							<Text
 								style={[
-									theme?.headerText,
-									{
-										fontSize:
-											(theme?.headerText.fontSize ||
-												20) * (opaque ? 0.8 : 1),
-										marginTop: 3,
-									},
+									opaque
+										? theme?.header.textOpaque
+										: theme?.header.textTransparent,
 								]}>
 								{t("site.title")}
 							</Text>
@@ -111,26 +128,18 @@ const BlogHeader: React.FC<{
 					</A>
 				</Link>
 				<A href={`https://tomasrav.me/?${params}`}>
-					<View
-						style={{ flexDirection: "row", alignItems: "center" }}>
+					<View style={[theme?.header.link]}>
 						{/* eslint-disable-next-line jsx-a11y/alt-text */}
 						<Image
 							source={{
 								uri: "/main_logo.svg",
 							}}
-							style={[
-								theme?.headerIcon,
-								{ marginRight: 5 },
-							]}></Image>
+							style={[theme?.header.icon]}></Image>
 						<Text
 							style={[
-								theme?.headerText,
-								{
-									fontSize:
-										(theme?.headerText.fontSize || 20) *
-										(opaque ? 0.8 : 1),
-									marginTop: 3,
-								},
+								opaque
+									? theme?.header.textOpaque
+									: theme?.header.textTransparent,
 							]}>
 							{t("site.main")}
 						</Text>
@@ -145,9 +154,9 @@ const BlogHeader: React.FC<{
 							href={{ query: { ...query, lang } }}>
 							<A
 								style={[
-									theme?.headerText,
+									theme?.header.textOpaque,
 									{
-										fontSize: theme?.headerIcon.height,
+										fontSize: theme?.header.icon.height,
 										marginLeft: 5,
 									},
 								]}>

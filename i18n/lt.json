@@ -2,7 +2,13 @@
 	"hi": "Sveiki",
 	"site": {
 		"title": "Virtuvės Nuotykiai",
-		"main": "Pagrindinis Puslapis"
+		"main": "Pagrindinis Puslapis",
+		"tagline": "Mažiau Nuotykių, daugiau senų receptų.\nAtleiskit.",
+		"copyright": "©️ 2022 Tomas Ravinskas",
+		"cc": "Turinys prieinamas pagal CC-BY 4.0",
+		"third-party": "Trečiųjų šalių licenzijos",
+		"about": "Apie",
+		"tags": "Žymos"
 	},
 	"post": {
 		"edited": "Atnaujinta ",

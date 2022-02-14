@@ -2,9 +2,10 @@
 import path from "path";
 import fs from "fs/promises";
 import matter, { GrayMatterFile } from "gray-matter";
-import type { Root } from "mdast";
-import type { JsonValue } from "type-fest";
 import { parseMarkdown } from "../../../../../util/markdown";
+import type { GetStaticPaths, GetStaticProps } from "next";
+import type { Root } from "mdast";
+import type { Post } from "../../../../../types/post";
 
 import React, { useState } from "react";
 import {
@@ -15,40 +16,13 @@ import {
 	Text,
 	View,
 } from "react-native";
-import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
-import {
-	useTranslation,
-	useLanguageQuery,
-	useSelectedLanguage,
-} from "next-export-i18n";
+import { useTranslation, useSelectedLanguage } from "next-export-i18n";
 import { A, Article, H1, HR, P } from "@expo/html-elements";
 import Fade from "react-native-fade-in-out";
 import Header from "../../../../../components/header";
 import useTheme from "../../../../_theme";
 import { Markdown } from "../../../../../components/markdown";
-
-interface Serializable {
-	[x: string]: Root | JsonValue | undefined;
-}
-
-interface PostMatter extends Serializable {
-	title: string;
-	publish: string;
-	edited: string | null;
-	tags: string[];
-	excerpt: string;
-	content: Root;
-	image: {
-		uri: string;
-		copyright: string;
-	} | null;
-	source: string | null;
-}
-
-interface Post {
-	[lang: string]: PostMatter;
-}
 
 const PostDate: React.FC<{
 	publish: string;
@@ -60,17 +34,9 @@ const PostDate: React.FC<{
 
 	if (edited) {
 		return (
-			<P
-				style={[
-					theme?.text,
-					{ fontSize: (theme?.text.fontSize || 18) * 0.7 },
-				]}>
+			<P style={[theme?.text.body, theme?.article.byline.date]}>
 				<Text>{t("post.edited")}</Text>
-				<Text
-					style={{
-						fontFamily: theme?.text.fontBold,
-						fontWeight: "bold",
-					}}>
+				<Text style={[theme?.text.strong, theme?.article.byline.date]}>
 					{new Date(edited).toLocaleString(lang, {
 						year: "2-digit",
 						month: "numeric",
@@ -81,11 +47,7 @@ const PostDate: React.FC<{
 				</Text>
 				{"\n"}
 				<Text>{t("post.published.edited")}</Text>
-				<Text
-					style={{
-						fontFamily: theme?.text.fontBold,
-						fontWeight: "bold",
-					}}>
+				<Text style={[theme?.text.strong, theme?.article.byline.date]}>
 					{new Date(publish).toLocaleString(lang, {
 						year: "2-digit",
 						month: "short",
@@ -96,17 +58,9 @@ const PostDate: React.FC<{
 		);
 	}
 	return (
-		<P
-			style={[
-				theme?.text,
-				{ fontSize: (theme?.text.fontSize || 18) * 0.7 },
-			]}>
+		<P style={[theme?.text.body, theme?.article.byline.date]}>
 			<Text>{t("post.published.noedit")}</Text>
-			<Text
-				style={{
-					fontFamily: theme?.text.fontBold,
-					fontWeight: "bold",
-				}}>
+			<Text style={[theme?.text.strong, theme?.article.byline.date]}>
 				{new Date(publish).toLocaleString(lang, {
 					year: "numeric",
 					month: "long",
@@ -119,17 +73,17 @@ const PostDate: React.FC<{
 	);
 };
 
-const Post: React.FC<{ post: Post }> = ({ post }) => {
+const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 	const theme = useTheme();
 	const { lang } = useSelectedLanguage();
 	const { t } = useTranslation();
-	const [headerOpaque, setHeaderOpaque] = useState(false);
+	const [header, setHeader] = useState(true);
 
 	const headerOpaqueCallback = (
 		ev: NativeSyntheticEvent<NativeScrollEvent>,
 	) => {
-		if (ev.nativeEvent.contentOffset.y > 80 !== headerOpaque) {
-			setHeaderOpaque(ev.nativeEvent.contentOffset.y > 80);
+		if (ev.nativeEvent.contentOffset.y <= 100 !== header) {
+			setHeader(ev.nativeEvent.contentOffset.y <= 80);
 		}
 	};
 
@@ -139,7 +93,7 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 				onScroll={headerOpaqueCallback}
 				scrollEventThrottle={10000}
 				stickyHeaderIndices={[0]}>
-				<Header opaque={headerOpaque}></Header>
+				<Header opaque={header}></Header>
 				{Object.entries(post).map(([contentLang, content]) => (
 					<Fade
 						key={contentLang}
@@ -149,37 +103,21 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 						style={{
 							display: lang === contentLang ? "flex" : "none",
 						}}>
-						<Article style={theme?.article}>
-							<H1 style={[theme?.heading]}>{content.title}</H1>
-							<View
-								style={{
-									flexDirection: "row",
-									alignItems: "center",
-									justifyContent: "space-between",
-									width: "100%",
-									marginBottom: 50,
-								}}>
+						<Article style={[theme?.article.container]}>
+							<H1 style={[theme?.text.heading]}>
+								{content.title}
+							</H1>
+							<View style={[theme?.article.byline.container]}>
 								<Text
 									style={[
-										theme?.text,
-										{
-											fontSize:
-												(theme?.text.fontSize || 18) *
-												0.7,
-										},
+										theme?.text.body,
+										theme?.article.byline.author,
 									]}>
 									{t("post.byline")}
 									<Text
 										style={[
-											theme?.text,
-											{
-												fontSize:
-													(theme?.text.fontSize ||
-														18) * 0.8,
-												fontStyle: "italic",
-												fontFamily:
-													theme?.text.fontItalic,
-											},
+											theme?.text.emphasis,
+											theme?.article.byline.author,
 										]}>
 										Tomas Ravinskas
 									</Text>
@@ -190,44 +128,30 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 									edited={content.edited}></PostDate>
 							</View>
 							{content.image && (
-								<View
-									style={{
-										alignItems: "center",
-										marginBottom: 30,
-									}}>
+								<View style={[theme?.article.image.container]}>
 									<Image
 										source={{ uri: content.image.uri }}
-										style={theme?.image}></Image>
+										style={
+											theme?.article.image.style
+										}></Image>
 									<Text
 										style={[
-											theme?.text,
-											{
-												fontSize:
-													(theme?.text.fontSize ||
-														18) * 0.8,
-												opacity: 0.5,
-											},
+											theme?.text.body,
+											theme?.article.image.copyright,
 										]}>
 										©️ {content.image.copyright}
 									</Text>
 								</View>
 							)}
-							<Markdown node={content.content}></Markdown>
-							<HR
-								style={{
-									backgroundColor: theme?.text.color,
-									width: "95%",
-								}}></HR>
+							<Markdown
+								node={content.content as Root}></Markdown>
+							<HR style={[theme?.markdown.hr]}></HR>
 							{content.source && (
 								<P
 									nativeID="via"
 									style={[
-										theme?.text,
-										{
-											fontSize:
-												(theme?.text.fontSize || 18) *
-												0.85,
-										},
+										theme?.text.body,
+										theme?.article.footer.source,
 									]}>
 									{t("post.via")}
 									<A href={content.source}>
@@ -238,13 +162,8 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 							<P
 								nativeID="tag"
 								style={[
-									theme?.text,
-									{
-										fontSize:
-											(theme?.text.fontSize || 18) *
-											0.85,
-										opacity: 0.6,
-									},
+									theme?.text.body,
+									theme?.article.footer.tag,
 								]}>
 								{t("post.tag")}
 								{content.tags.map((tag) => (
@@ -257,14 +176,8 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 										}}>
 										<A
 											style={[
-												theme?.text,
-												{
-													fontFamily:
-														theme?.text.fontItalic,
-													fontStyle: "italic",
-													opacity: 0.6,
-													marginRight: 10,
-												},
+												theme?.text.emphasis,
+												theme?.article.footer.tag,
 											]}>
 											{tag}
 										</A>
@@ -279,7 +192,7 @@ const Post: React.FC<{ post: Post }> = ({ post }) => {
 	);
 };
 
-export default Post;
+export default PostRenderer;
 
 const POSTS_PATH = path.join(process.cwd(), "content/posts");
 
@@ -366,7 +279,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			tags: matt.data.tags.split(" "),
 			image: matt.data.image || null,
 			source: matt.data.source || null,
-			excerpt: matt.excerpt as string,
 			content: parseMarkdown(matt.content),
 		};
 	}

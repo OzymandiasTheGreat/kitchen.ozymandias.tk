@@ -2,7 +2,13 @@
 	"hi": "Hello there",
 	"site": {
 		"title": "Kitchen Escapades",
-		"main": "Main Website"
+		"main": "Main Website",
+		"tagline": "Less Escapades, more old recipe book.\nForgive me.",
+		"copyright": "©️ 2022 Tomas Ravinskas",
+		"cc": "Content available under CC-BY 4.0",
+		"third-party": "Third party licenses",
+		"about": "About",
+		"tags": "Tags"
 	},
 	"post": {
 		"edited": "Edited on ",

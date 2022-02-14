@@ -1543,6 +1543,13 @@
     "@prefresh/core" "^1.3.1"
     "@prefresh/utils" "^1.1.0"
 
+"@react-native-seoul/masonry-list@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@react-native-seoul/masonry-list/-/masonry-list-1.1.4.tgz#67f8b59e19a61c78d03eb007f5ae574aeb7fbfb7"
+  integrity sha512-pHB1vz8cN9gRuOaFJsUOTi0B7w6LimzuqmQP7/iLJkXUnHW45kIMetuM29wPJ44Hz7+1nNZQ2ONCK+WyZ3EtZA==
+  dependencies:
+    dooboolab-welcome "^1.3.2"
+
 "@react-native/normalize-color@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.0.0.tgz#da955909432474a9a0fe1cbffc66576a0447f567"
@@ -1601,6 +1608,13 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+
+"@types/klaw@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/klaw/-/klaw-3.0.3.tgz#68c02ecfe6b313ef5b93876d44ac5266808c6a01"
+  integrity sha512-mXlRDFbTLpVysvxahXUQav0hFctgu3Fqr2xmSrpf/ptO/FwOp7SFEGsJkEihwshMbof3/BIiVJ/o42cuOOuv6g==
+  dependencies:
+    "@types/node" "*"
 
 "@types/mdast@^3.0.0", "@types/mdast@^3.0.10":
   version "3.0.10"
@@ -3530,6 +3544,11 @@ domutils@^2.0.0, domutils@^2.5.2, domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
+dooboolab-welcome@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/dooboolab-welcome/-/dooboolab-welcome-1.3.2.tgz#4928595312f0429b4ea1b485ba8767bae6acdab7"
+  integrity sha512-2NbMaIIURElxEf/UAoVUFlXrO+7n/FRhLCiQlk4fkbGRh9cJ3/f8VEMPveR9m4Ug2l2Zey+UCXjd6EcBqHJ5bw==
+
 dot-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/dot-case/-/dot-case-3.0.4.tgz#9b2b670d00a431667a8a75ba29cd1b98809ce751"
@@ -5456,6 +5475,11 @@ klaw-sync@^6.0.0:
   integrity sha512-nIeuVSzdCCs6TDPTqI8w1Yre34sSq7AkZ4B3sfOBbI2CgVSB4Du4aLQijFU2+lhAFCwt9+42Hel6lQNIv6AntQ==
   dependencies:
     graceful-fs "^4.1.11"
+
+klaw@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/klaw/-/klaw-4.0.1.tgz#8dc6f5723f05894e8e931b516a8ff15c2976d368"
+  integrity sha512-pgsE40/SvC7st04AHiISNewaIMUbY5V/K8b21ekiPiFoYs/EYSdsGa+FJArB1d441uq4Q8zZyIxvAzkGNlBdRw==
 
 kleur@^3.0.3:
   version "3.0.3"

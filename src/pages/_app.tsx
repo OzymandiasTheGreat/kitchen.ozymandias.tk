@@ -16,10 +16,10 @@ function App({ Component, pageProps }: AppProps) {
 				<link rel="icon" type="image/png" href="/favicon.png" />
 			</Head>
 
-			<SafeAreaView style={[theme?.background, { flex: 1 }]}>
+			<SafeAreaView style={[theme?.main]}>
 				<TileBackground
 					src="/tile.svg"
-					color={theme?.background.backgroundColor as string}>
+					color={theme?.main.backgroundColor as string}>
 					<Component {...pageProps} />
 				</TileBackground>
 			</SafeAreaView>

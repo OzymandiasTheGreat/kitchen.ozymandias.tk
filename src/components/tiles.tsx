@@ -56,7 +56,7 @@ class Tiles {
 	}
 
 	draw(): void {
-		if (Date.now() - this.now > 96 && this.ctx) {
+		if (Date.now() - this.now > 64 && this.ctx) {
 			this.ctx.fillStyle = this.color;
 			this.ctx.fillRect(
 				0,
