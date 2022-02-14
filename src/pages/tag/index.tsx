@@ -25,7 +25,6 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 	const theme = useTheme();
 	const { lang } = useSelectedLanguage();
 	const [header, setHeader] = useState(true);
-	console.log(tags);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -40,7 +39,7 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 		<SafeAreaView style={{ flex: 1 }}>
 			<ScrollView
 				onScroll={headerCallback}
-				scrollEventThrottle={1000}
+				scrollEventThrottle={100}
 				stickyHeaderIndices={[0]}>
 				<Header opaque={header}></Header>
 				<View style={[theme?.tagcloud.container]}>

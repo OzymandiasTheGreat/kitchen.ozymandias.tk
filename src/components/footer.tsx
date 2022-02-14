@@ -20,7 +20,7 @@ const BlogFooter: React.FC = () => {
 						flexDirection: "row",
 						alignItems: "center",
 						justifyContent: "space-around",
-						width: 100,
+						width: 200,
 					},
 				]}>
 				<Link passHref href={{ pathname: "/about", query: { lang } }}>
@@ -28,6 +28,9 @@ const BlogFooter: React.FC = () => {
 				</Link>
 				<Link passHref href={{ pathname: "/tag", query: { lang } }}>
 					<A>{t("site.tags")}</A>
+				</Link>
+				<Link passHref href={{ pathname: "/posts", query: { lang } }}>
+					<A>{t("site.archive")}</A>
 				</Link>
 			</P>
 			<P style={[theme?.footer.paragraph]}>

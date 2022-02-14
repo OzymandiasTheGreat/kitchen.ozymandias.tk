@@ -373,6 +373,41 @@ const dark = {
 			marginBottom: 20,
 		} as TextStyle,
 	},
+	archive: {
+		width: 300,
+		height: 260,
+		selectedColor: COLOR_FG_DARKER,
+		selectedBackground: "transparent",
+		scroller: {
+			flex: 1,
+			width: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_DARKER,
+			flex: 1,
+			alignSelf: "center",
+			flexDirection: "row",
+			flexWrap: "wrap",
+			alignItems: "baseline",
+			justifyContent: "space-around",
+			width: "80%",
+			maxWidth: 800,
+			minHeight: "100%",
+			padding: 45,
+			borderRadius: 3,
+		} as ViewStyle,
+		heading: {
+			fontSize: 16,
+			alignSelf: "center",
+		} as TextStyle,
+		text: {
+			fontSize: 14,
+		} as TextStyle,
+		disabled: {
+			fontSize: 13,
+			opacity: 0.3,
+		} as TextStyle,
+	},
 };
 
 const light = {
@@ -710,6 +745,41 @@ const light = {
 			fontSize: 32,
 			alignSelf: "center",
 			marginBottom: 20,
+		} as TextStyle,
+	},
+	archive: {
+		width: 300,
+		height: 260,
+		selectedColor: COLOR_FG_LIGHTER,
+		selectedBackground: "transparent",
+		scroller: {
+			flex: 1,
+			width: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_LIGHTER,
+			flex: 1,
+			alignSelf: "center",
+			flexDirection: "row",
+			flexWrap: "wrap",
+			alignItems: "baseline",
+			justifyContent: "space-around",
+			width: "80%",
+			maxWidth: 800,
+			minHeight: "100%",
+			padding: 45,
+			borderRadius: 3,
+		} as ViewStyle,
+		heading: {
+			fontSize: 16,
+			alignSelf: "center",
+		} as TextStyle,
+		text: {
+			fontSize: 14,
+		} as TextStyle,
+		disabled: {
+			fontSize: 13,
+			opacity: 0.3,
 		} as TextStyle,
 	},
 };

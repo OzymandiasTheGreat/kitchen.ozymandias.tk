@@ -91,7 +91,7 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 		<View style={{ flex: 1 }}>
 			<ScrollView
 				onScroll={headerOpaqueCallback}
-				scrollEventThrottle={10000}
+				scrollEventThrottle={100}
 				stickyHeaderIndices={[0]}>
 				<Header opaque={header}></Header>
 				{Object.entries(post).map(([contentLang, content]) => (
@@ -238,7 +238,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	return {
 		paths: posts.map((p) => {
 			const [year, month, day, slug] = p.split(path.sep);
-			return { params: { year, month, day, slug } };
+			return { params: { date: [year, month, day], slug } };
 		}),
 		fallback: false,
 	};
