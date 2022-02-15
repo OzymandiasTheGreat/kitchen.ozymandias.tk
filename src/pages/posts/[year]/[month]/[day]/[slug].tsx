@@ -137,7 +137,7 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 								<PostDate
 									lang={contentLang}
 									publish={content.publish}
-									edited={content.edited}></PostDate>
+									edit={content.edited}></PostDate>
 							</View>
 							{content.image && (
 								<View style={[theme?.article.image.container]}>
