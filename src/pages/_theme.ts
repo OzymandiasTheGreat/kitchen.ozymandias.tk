@@ -446,6 +446,25 @@ const dark = {
 			marginBottom: 50,
 		} as ViewStyle,
 	},
+	comment: {
+		button: {
+			width: 300,
+			alignSelf: "center",
+			backgroundColor: COLOR_BG_DARKER,
+			paddingVertical: 10,
+			borderRadius: 3,
+			margin: 30,
+		} as ViewStyle,
+		container: {
+			flex: 1,
+			alignSelf: "center",
+			width: "80%",
+			maxWidth: 800,
+			backgroundColor: COLOR_BG_DARKER,
+			borderRadius: 3,
+			margin: 30,
+		} as ViewStyle,
+	},
 };
 
 const light = {
@@ -864,6 +883,25 @@ const light = {
 			paddingHorizontal: 50,
 			borderRadius: 3,
 			marginBottom: 50,
+		} as ViewStyle,
+	},
+	comment: {
+		button: {
+			width: 300,
+			alignSelf: "center",
+			backgroundColor: COLOR_BG_DARKER,
+			paddingVertical: 10,
+			borderRadius: 3,
+			margin: 30,
+		} as ViewStyle,
+		container: {
+			flex: 1,
+			alignSelf: "center",
+			width: "80%",
+			maxWidth: 800,
+			backgroundColor: COLOR_BG_LIGHTER,
+			borderRadius: 3,
+			margin: 30,
 		} as ViewStyle,
 	},
 };

@@ -19,7 +19,8 @@
 		},
 		"byline": "by ",
 		"via": "Via ",
-		"tag": "Tagged: "
+		"tag": "Tagged: ",
+		"comment": "Load Comments"
 	},
 	"about": {
 		"title": "Tomas' Kitchen Escapades",

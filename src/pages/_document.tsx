@@ -1,11 +1,11 @@
 // @generated: @expo/next-adapter@3.1.18
 import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class CustomDocument extends Document {
 	render() {
 		return (
-			<html>
+			<Html>
 				<Head>
 					<meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 					<link
@@ -26,7 +26,7 @@ class CustomDocument extends Document {
 					<Main />
 					<NextScript />
 				</body>
-			</html>
+			</Html>
 		);
 	}
 }

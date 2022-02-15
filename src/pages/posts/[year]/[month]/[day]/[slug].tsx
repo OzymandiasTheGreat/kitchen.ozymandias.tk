@@ -11,6 +11,7 @@ import type { Post } from "../../../../../types/post";
 
 import React, { useState } from "react";
 import {
+	Button,
 	Image,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
@@ -90,6 +91,7 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 	const { lang } = useSelectedLanguage();
 	const { t } = useTranslation();
 	const [header, setHeader] = useState(true);
+	const [comments, setComments] = useState(false);
 
 	const headerOpaqueCallback = (
 		ev: NativeSyntheticEvent<NativeScrollEvent>,
@@ -98,6 +100,7 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 			setHeader(ev.nativeEvent.contentOffset.y <= 80);
 		}
 	};
+	const loadComments = () => setComments(true);
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -199,6 +202,31 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 						</Article>
 					</Fade>
 				))}
+				{!comments && (
+					<View style={[theme?.comment.button]}>
+						<Text
+							style={[
+								theme?.text.strong,
+								{ marginHorizontal: "auto" },
+							]}
+							onPress={loadComments}>
+							{t("post.comment")}
+						</Text>
+					</View>
+				)}
+				{comments && (
+					<View style={[theme?.comment.container]}>
+						<script
+							src="https://utteranc.es/client.js"
+							// @ts-ignore
+							repo="OzymandiasTheGreat/kitchen.tomasrav.me"
+							issue-term="pathname"
+							label="comment"
+							theme="preferred-color-scheme"
+							crossOrigin="anonymous"
+							async></script>
+					</View>
+				)}
 				<Footer></Footer>
 			</ScrollView>
 		</View>
