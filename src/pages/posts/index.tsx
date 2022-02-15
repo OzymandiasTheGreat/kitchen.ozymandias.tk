@@ -54,7 +54,7 @@ const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
 				.padStart(2, "0")}/${date
 				.date()
 				.toString()
-				.padStart(2, "0")}/?lang=${lang}`,
+				.padStart(2, "0")}?lang=${lang}`,
 			"_self",
 		);
 	};
