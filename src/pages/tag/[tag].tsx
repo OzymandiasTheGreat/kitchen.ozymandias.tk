@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import klaw from "klaw";
 import matter from "gray-matter";
 import { parseMarkdown } from "../../util/markdown";
+import { POSTSDIR } from "../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../types/post";
 
@@ -87,11 +88,9 @@ const TagListing: React.FC<{
 
 export default TagListing;
 
-const postsDir = join(process.cwd(), "content/posts");
-
 export const getStaticPaths: GetStaticPaths = async () => {
 	const tags = new Set<string>();
-	for await (const { path, stats } of klaw(postsDir)) {
+	for await (const { path, stats } of klaw(POSTSDIR)) {
 		if (stats.isFile()) {
 			const raw = await fs.readFile(path, "utf8");
 			const matt = matter(raw);
@@ -109,7 +108,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const tag = params?.tag as string;
 	const posts: { [slug: string]: Post } = {};
-	for await (const { path, stats } of klaw(postsDir)) {
+	for await (const { path, stats } of klaw(POSTSDIR)) {
 		if (stats.isFile()) {
 			const raw = await fs.readFile(path, "utf8");
 			const matt = matter(raw, {
@@ -119,7 +118,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			const tags = matt.data.tags.split(" ");
 			if (tags.includes(tag)) {
 				const lang = basename(path, extname(path));
-				const slug = relative(postsDir, dirname(path));
+				const slug = relative(POSTSDIR, dirname(path));
 				if (!posts[slug]) {
 					posts[slug] = {};
 				}

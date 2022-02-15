@@ -2,6 +2,7 @@ import { join } from "path";
 import fs from "fs/promises";
 import klaw from "klaw";
 import matter from "gray-matter";
+import { POSTSDIR } from "../../constants";
 import type { GetStaticProps } from "next";
 
 import React, { useCallback, useState } from "react";
@@ -83,9 +84,8 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 export default Tags;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const postsDir = join(process.cwd(), "content/posts");
 	const tags: Record<string, number> = {};
-	for await (const { path, stats } of klaw(postsDir)) {
+	for await (const { path, stats } of klaw(POSTSDIR)) {
 		if (stats.isFile()) {
 			const raw = await fs.readFile(path, "utf8");
 			const matt = matter(raw);

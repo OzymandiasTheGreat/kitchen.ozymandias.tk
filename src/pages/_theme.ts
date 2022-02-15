@@ -408,6 +408,52 @@ const dark = {
 			opacity: 0.3,
 		} as TextStyle,
 	},
+	about: {
+		scroller: {
+			flex: 1,
+			width: "100%",
+			minHeight: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_DARKER,
+			width: "80%",
+			maxWidth: 800,
+			alignSelf: "center",
+			paddingVertical: 40,
+			paddingHorizontal: 50,
+			borderRadius: 3,
+		} as ViewStyle,
+		image: {
+			width: 275,
+			height: 275,
+			alignSelf: "center",
+			borderRadius: 138,
+			borderColor: COLOR_FG_DARKER,
+			borderWidth: 10,
+			marginBottom: 50,
+		} as ImageStyle,
+	},
+	credits: {
+		image: {
+			width: 256,
+			height: 256,
+		},
+		scroller: {
+			flex: 1,
+			width: "100%",
+			minHeight: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_DARKER,
+			width: "80%",
+			maxWidth: 800,
+			alignSelf: "center",
+			paddingVertical: 40,
+			paddingHorizontal: 50,
+			borderRadius: 3,
+			marginBottom: 50,
+		} as ViewStyle,
+	},
 };
 
 const light = {
@@ -781,6 +827,52 @@ const light = {
 			fontSize: 13,
 			opacity: 0.3,
 		} as TextStyle,
+	},
+	about: {
+		scroller: {
+			flex: 1,
+			width: "100%",
+			minHeight: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_LIGHTER,
+			width: "80%",
+			maxWidth: 800,
+			alignSelf: "center",
+			paddingVertical: 40,
+			paddingHorizontal: 50,
+			borderRadius: 3,
+		} as ViewStyle,
+		image: {
+			width: 275,
+			height: 275,
+			alignSelf: "center",
+			borderRadius: 138,
+			borderColor: COLOR_FG_LIGHTER,
+			borderWidth: 10,
+			marginBottom: 50,
+		} as ImageStyle,
+	},
+	credits: {
+		image: {
+			width: 256,
+			height: 256,
+		},
+		scroller: {
+			flex: 1,
+			width: "100%",
+			minHeight: "100%",
+		} as ViewStyle,
+		container: {
+			backgroundColor: COLOR_BG_DARKER,
+			width: "80%",
+			maxWidth: 800,
+			alignSelf: "center",
+			paddingVertical: 40,
+			paddingHorizontal: 50,
+			borderRadius: 3,
+			marginBottom: 50,
+		} as ViewStyle,
 	},
 };
 

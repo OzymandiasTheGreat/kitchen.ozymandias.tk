@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import klaw from "klaw";
 import matter from "gray-matter";
 import { parseMarkdown } from "../util/markdown";
+import { POSTSDIR } from "../constants";
 import type { GetStaticProps } from "next";
 import type { Post } from "../types/post";
 
@@ -76,9 +77,8 @@ const App: React.FC<{ posts: { [slug: string]: Post } }> = ({ posts }) => {
 export default App;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const postsDir = join(process.cwd(), "content/posts");
 	const posts: { [slug: string]: Post } = {};
-	for await (const { path, stats } of klaw(postsDir)) {
+	for await (const { path, stats } of klaw(POSTSDIR)) {
 		if (stats.isFile()) {
 			const raw = await fs.readFile(path, "utf8");
 			const matt = matter(raw, {
@@ -86,7 +86,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 				excerpt_separator: "<!--more-->",
 			});
 			const lang = basename(path, extname(path));
-			const slug = relative(postsDir, dirname(path));
+			const slug = relative(POSTSDIR, dirname(path));
 			if (!posts[slug]) {
 				posts[slug] = {};
 			}

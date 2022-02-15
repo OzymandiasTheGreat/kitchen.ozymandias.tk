@@ -1,6 +1,7 @@
 import { join, relative, sep } from "path";
 import fs from "fs/promises";
 import klaw from "klaw";
+import { POSTSDIR } from "../../constants";
 import type { GetStaticProps } from "next";
 
 import React, { useCallback, useState } from "react";
@@ -126,11 +127,10 @@ const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
 export default Archive;
 
 export const getStaticProps: GetStaticProps = async () => {
-	const postsDir = join(process.cwd(), "content/posts");
 	const dates: Record<string, string[]> = {};
-	for await (const { path, stats } of klaw(postsDir, { depthLimit: 3 })) {
+	for await (const { path, stats } of klaw(POSTSDIR, { depthLimit: 3 })) {
 		if (stats.isDirectory()) {
-			const parts = relative(postsDir, path).split(sep);
+			const parts = relative(POSTSDIR, path).split(sep);
 			if (parts.length === 2) {
 				dates[parts.join("-")] = [];
 			} else if (parts.length === 3) {

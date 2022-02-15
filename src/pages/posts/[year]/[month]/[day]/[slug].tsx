@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
-import path from "path";
+import { basename, extname, join, relative, sep } from "path";
 import fs from "fs/promises";
+import klaw from "klaw";
 import matter, { GrayMatterFile } from "gray-matter";
 import { parseMarkdown } from "../../../../../util/markdown";
+import { POSTSDIR } from "../../../../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Root } from "mdast";
 import type { Post } from "../../../../../types/post";
@@ -18,57 +20,67 @@ import {
 } from "react-native";
 import Link from "next/link";
 import { useTranslation, useSelectedLanguage } from "next-export-i18n";
-import { A, Article, H1, HR, P } from "@expo/html-elements";
+import { A, Article, H1, HR, P, Time } from "@expo/html-elements";
 import Fade from "react-native-fade-in-out";
 import Header from "../../../../../components/header";
+import Footer from "../../../../../components/footer";
 import useTheme from "../../../../_theme";
 import { Markdown } from "../../../../../components/markdown";
 
 const PostDate: React.FC<{
 	publish: string;
-	edited: string | null;
+	edit: string | null;
 	lang: string;
-}> = ({ publish, edited, lang }) => {
+}> = ({ publish, edit, lang }) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
 
-	if (edited) {
+	if (edit) {
+		const edited = new Date(edit).toLocaleString(lang, {
+			year: "2-digit",
+			month: "numeric",
+			day: "numeric",
+			hour: "numeric",
+			minute: "numeric",
+		});
+		const published = new Date(publish).toLocaleString(lang, {
+			year: "2-digit",
+			month: "short",
+			day: "numeric",
+		});
 		return (
 			<P style={[theme?.text.body, theme?.article.byline.date]}>
 				<Text>{t("post.edited")}</Text>
-				<Text style={[theme?.text.strong, theme?.article.byline.date]}>
-					{new Date(edited).toLocaleString(lang, {
-						year: "2-digit",
-						month: "numeric",
-						day: "numeric",
-						hour: "numeric",
-						minute: "numeric",
-					})}
-				</Text>
+				<Time
+					style={[theme?.text.strong, theme?.article.byline.date]}
+					dateTime={edited}>
+					{edited}
+				</Time>
 				{"\n"}
 				<Text>{t("post.published.edited")}</Text>
-				<Text style={[theme?.text.strong, theme?.article.byline.date]}>
-					{new Date(publish).toLocaleString(lang, {
-						year: "2-digit",
-						month: "short",
-						day: "numeric",
-					})}
-				</Text>
+				<Time
+					style={[theme?.text.strong, theme?.article.byline.date]}
+					dateTime={published}>
+					{published}
+				</Time>
 			</P>
 		);
 	}
+	const published = new Date(publish).toLocaleString(lang, {
+		year: "numeric",
+		month: "long",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+	});
 	return (
 		<P style={[theme?.text.body, theme?.article.byline.date]}>
 			<Text>{t("post.published.noedit")}</Text>
-			<Text style={[theme?.text.strong, theme?.article.byline.date]}>
-				{new Date(publish).toLocaleString(lang, {
-					year: "numeric",
-					month: "long",
-					day: "2-digit",
-					hour: "2-digit",
-					minute: "2-digit",
-				})}
-			</Text>
+			<Time
+				style={[theme?.text.strong, theme?.article.byline.date]}
+				dateTime={published}>
+				{published}
+			</Time>
 		</P>
 	);
 };
@@ -187,6 +199,7 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 						</Article>
 					</Fade>
 				))}
+				<Footer></Footer>
 			</ScrollView>
 		</View>
 	);
@@ -194,70 +207,36 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 
 export default PostRenderer;
 
-const POSTS_PATH = path.join(process.cwd(), "content/posts");
-
 export const getStaticPaths: GetStaticPaths = async () => {
-	const years = (await fs.readdir(POSTS_PATH, { withFileTypes: true }))
-		.filter((y) => y.isDirectory())
-		.map((y) => y.name);
-	const months = (
-		await Promise.all(
-			years.map((y) =>
-				fs
-					.readdir(path.join(POSTS_PATH, y), { withFileTypes: true })
-					.then((ms) =>
-						ms
-							.filter((m) => m.isDirectory())
-							.map((m) => path.join(y, m.name)),
-					),
-			),
-		)
-	).flat();
-	const days = (
-		await Promise.all(
-			months.map((m) =>
-				fs
-					.readdir(path.join(POSTS_PATH, m), { withFileTypes: true })
-					.then((ds) =>
-						ds
-							.filter((d) => d.isDirectory())
-							.map((d) => path.join(m, d.name)),
-					),
-			),
-		)
-	).flat();
-	const posts = (
-		await Promise.all(
-			days.map((d) =>
-				fs
-					.readdir(path.join(POSTS_PATH, d), { withFileTypes: true })
-					.then((ps) => ps.map((p) => path.join(d, p.name))),
-			),
-		)
-	).flat();
-	return {
-		paths: posts.map((p) => {
-			const [year, month, day, slug] = p.split(path.sep);
-			return { params: { date: [year, month, day], slug } };
-		}),
-		fallback: false,
-	};
+	const paths: {
+		params: { year: string; month: string; day: string; slug: string };
+	}[] = [];
+	for await (const { path, stats } of klaw(POSTSDIR, { depthLimit: 4 })) {
+		if (stats.isDirectory()) {
+			const parts = relative(POSTSDIR, path).split(sep);
+			if (parts.length === 4) {
+				const [year, month, day, slug] = parts;
+				paths.push({ params: { year, month, day, slug } });
+			}
+		}
+	}
+	return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const { year, month, day, slug } = params as any;
 	const postMD = await Promise.all(
 		(
-			await fs.readdir(path.join(POSTS_PATH, year, month, day, slug), {
+			await fs.readdir(join(POSTSDIR, year, month, day, slug), {
 				withFileTypes: true,
 			})
 		)
 			.filter((fn) => fn.isFile())
 			.map((fn) => {
-				const lang = path.basename(fn.name, path.extname(fn.name));
+				const lang = basename(fn.name, extname(fn.name));
 				return fs
 					.readFile(
-						path.join(POSTS_PATH, year, month, day, slug, fn.name),
+						join(POSTSDIR, year, month, day, slug, fn.name),
 						"utf8",
 					)
 					.then((content) => ({ lang, content }));

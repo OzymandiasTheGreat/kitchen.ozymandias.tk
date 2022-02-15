@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import klaw from "klaw";
 import matter from "gray-matter";
 import { parseMarkdown } from "../../../../../util/markdown";
+import { POSTSDIR } from "../../../../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../../../../types/post";
 
@@ -86,13 +87,11 @@ const Day: React.FC<{ date: string; posts: { [slug: string]: Post } }> = ({
 
 export default Day;
 
-const postsDir = join(process.cwd(), "content/posts");
-
 export const getStaticPaths: GetStaticPaths = async () => {
 	const paths: { params: { year: string; month: string; day: string } }[] =
 		[];
-	for await (const { path, stats } of klaw(postsDir, { depthLimit: 3 })) {
-		const parts = relative(postsDir, path).split(sep);
+	for await (const { path, stats } of klaw(POSTSDIR, { depthLimit: 3 })) {
+		const parts = relative(POSTSDIR, path).split(sep);
 		if (parts.length === 3) {
 			const [year, month, day] = parts;
 			paths.push({ params: { year, month, day } });
@@ -110,7 +109,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		params?.month as string,
 		params?.day as string,
 	];
-	const root = join(postsDir, ...date);
+	const root = join(POSTSDIR, ...date);
 	const posts: { [slug: string]: Post } = {};
 	for await (const { path, stats } of klaw(root, { depthLimit: 2 })) {
 		if (stats.isFile()) {
@@ -120,7 +119,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 				excerpt_separator: "<!--more-->",
 			});
 			const lang = basename(path, extname(path));
-			const slug = relative(postsDir, dirname(path));
+			const slug = relative(POSTSDIR, dirname(path));
 			if (!posts[slug]) {
 				posts[slug] = {};
 			}
