@@ -6,14 +6,20 @@ import {
 	TextStyle,
 	ViewStyle,
 } from "react-native";
-import { useFonts } from "expo-font";
-import { DancingScript_700Bold } from "@expo-google-fonts/dancing-script";
 import {
+	useFonts as useFontsHeading,
+	DancingScript_700Bold,
+} from "@expo-google-fonts/dancing-script";
+import {
+	useFonts as useFontsBody,
 	Poppins_400Regular,
 	Poppins_400Regular_Italic,
 	Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-import { FiraCode_400Regular } from "@expo-google-fonts/fira-code";
+import {
+	useFonts as useFontsCode,
+	FiraCode_400Regular,
+} from "@expo-google-fonts/fira-code";
 
 const FONT_REGULAR = "Poppins_400Regular";
 const FONT_STRONG = "Poppins_700Bold";
@@ -881,13 +887,13 @@ export const Theme = { dark, light };
 const useTheme = (): typeof Theme["dark"] | null => {
 	const scheme = useColorScheme();
 	const [theme, setTheme] = useState<typeof Theme["dark"] | null>(null);
-	const [loaded] = useFonts({
-		DancingScript_700Bold,
+	const [headingLoaded] = useFontsHeading({ DancingScript_700Bold });
+	const [bodyLoaded] = useFontsBody({
 		Poppins_400Regular,
 		Poppins_400Regular_Italic,
 		Poppins_700Bold,
-		FiraCode_400Regular,
 	});
+	const [codeLoaded] = useFontsCode({ FiraCode_400Regular });
 	const { width } = useWindowDimensions();
 
 	useEffect(() => {
@@ -909,7 +915,7 @@ const useTheme = (): typeof Theme["dark"] | null => {
 			theme.profile.container.display = "none";
 		}
 		setTheme(theme);
-	}, [scheme, loaded, width]);
+	}, [scheme, width, headingLoaded, bodyLoaded, codeLoaded]);
 
 	return theme;
 };
