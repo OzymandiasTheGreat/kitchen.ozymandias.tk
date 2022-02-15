@@ -4,9 +4,7 @@
 const { withExpo } = require("@expo/next-adapter");
 const withPlugins = require("next-compose-plugins");
 const withPreact = require("next-plugin-preact");
-const withRNWeb = require("next-transpile-modules")(["react-native-web"]);
-const withImages = require("next-images");
-const withFonts = require("next-fonts");
+const withTM = require("next-transpile-modules");
 
 module.exports = withPlugins([
 	[
@@ -22,9 +20,7 @@ module.exports = withPlugins([
 			},
 		},
 	],
-	withRNWeb,
-	withImages,
-	withFonts,
+	withTM(["recyclerlistview", "@jsamr/react-native-li", "react-native-web"]),
 	[
 		withExpo,
 		{

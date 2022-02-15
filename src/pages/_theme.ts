@@ -6,20 +6,12 @@ import {
 	TextStyle,
 	ViewStyle,
 } from "react-native";
-import {
-	useFonts,
-	DancingScript_700Bold,
-	Poppins_400Regular,
-	Poppins_400Regular_Italic,
-	Poppins_700Bold,
-	FiraCode_400Regular,
-} from "@expo-google-fonts/dev";
 
-const FONT_REGULAR = "Poppins_400Regular";
-const FONT_STRONG = "Poppins_700Bold";
-const FONT_EMPHASIS = "Poppins_400Regular_Italic";
-const FONT_CODE = "FiraCode_400Regular";
-const FONT_HEADING = "DancingScript_700Bold";
+const FONT_REGULAR = "Poppins";
+const FONT_STRONG = "Poppins";
+const FONT_EMPHASIS = "Poppins";
+const FONT_CODE = "Fira Code";
+const FONT_HEADING = "Dancing Script";
 const COLOR_BG_DARK = "#212121";
 const COLOR_BG_DARKER = "#424242";
 const COLOR_FG_DARK = "#fafafa";
@@ -881,13 +873,6 @@ export const Theme = { dark, light };
 const useTheme = (): typeof Theme["dark"] | null => {
 	const scheme = useColorScheme();
 	const [theme, setTheme] = useState<typeof Theme["dark"] | null>(null);
-	const [loaded] = useFonts({
-		DancingScript_700Bold,
-		Poppins_400Regular,
-		Poppins_400Regular_Italic,
-		Poppins_700Bold,
-		FiraCode_400Regular,
-	});
 	const { width } = useWindowDimensions();
 
 	useEffect(() => {
@@ -909,7 +894,7 @@ const useTheme = (): typeof Theme["dark"] | null => {
 			theme.profile.container.display = "none";
 		}
 		setTheme(theme);
-	}, [scheme, loaded, width]);
+	}, [scheme, width]);
 
 	return theme;
 };
