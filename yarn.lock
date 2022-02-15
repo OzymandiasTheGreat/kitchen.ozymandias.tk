@@ -1069,10 +1069,20 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@expo-google-fonts/dev@^0.2.2":
+"@expo-google-fonts/dancing-script@^0.2.2":
   version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dev/-/dev-0.2.2.tgz#aa7dfc9b0222b4a067944ee3b43b260ed160b28e"
-  integrity sha512-tgn5zhmgUs/d6+YsxJZ3JeGYOiaSXSFpH3COxTF8JLkg6aD/ERVIUf8hhVD9hv0CVAaTuNt+8m7MvIxFWXcq2g==
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dancing-script/-/dancing-script-0.2.2.tgz#ba92e2811f3b8c24da1bb17dc2da2be41839dcfc"
+  integrity sha512-MgnP5j/oxOl/J49dDXhhjo++9j3tHCrVQWo93+Ko4wqZCDb0ontL2Xd1Bmi/d/mcLha0GUy7fqDDc4QqfjdLvg==
+
+"@expo-google-fonts/fira-code@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/fira-code/-/fira-code-0.2.2.tgz#adbf44d6c8aee4e43305e8240d075918645c2409"
+  integrity sha512-IX8fCCLx/rsQPL1gXY2Vb3nkdHioNgQkHpyLpNXXY2GIJ8YPSJ3DVL8kthFrOZ7drCatga0IoWRVm1W3DOhfsQ==
+
+"@expo-google-fonts/poppins@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.2.2.tgz#d2a343fa69400ffbaf61ae97162791a59e215678"
+  integrity sha512-x0SzC8nWTC2pInIcBDiAuMJxhoglwqCGJYMM8ylI8HKDqBxMrfRTripB3xMGo6UtzROTcL+OX1w9nEcM5FK0PQ==
 
 "@expo/config-plugins@4.0.18", "@expo/config-plugins@^4.0.2":
   version "4.0.18"

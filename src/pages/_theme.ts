@@ -6,14 +6,14 @@ import {
 	TextStyle,
 	ViewStyle,
 } from "react-native";
+import { useFonts } from "expo-font";
+import { DancingScript_700Bold } from "@expo-google-fonts/dancing-script";
 import {
-	useFonts,
-	DancingScript_700Bold,
 	Poppins_400Regular,
 	Poppins_400Regular_Italic,
 	Poppins_700Bold,
-	FiraCode_400Regular,
-} from "@expo-google-fonts/dev";
+} from "@expo-google-fonts/poppins";
+import { FiraCode_400Regular } from "@expo-google-fonts/fira-code";
 
 const FONT_REGULAR = "Poppins_400Regular";
 const FONT_STRONG = "Poppins_700Bold";

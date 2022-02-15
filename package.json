@@ -7,7 +7,9 @@
 		"build": "next build && next export"
 	},
 	"dependencies": {
-		"@expo-google-fonts/dev": "^0.2.2",
+		"@expo-google-fonts/dancing-script": "^0.2.2",
+		"@expo-google-fonts/fira-code": "^0.2.2",
+		"@expo-google-fonts/poppins": "^0.2.2",
 		"@expo/html-elements": "^0.1.0",
 		"@react-native-seoul/masonry-list": "^1.1.4",
 		"expo": "~44.0.0",
