@@ -20,7 +20,10 @@
 		"byline": " ",
 		"via": "Šaltinis: ",
 		"tag": "Pažymėta: ",
-		"comment": "Įkelti Komentarus"
+		"commentsLoad": "Įkelti Komentarus",
+		"commentsPre1": "Komentavimui reikalinga ",
+		"commentsPre2": "nemokama ",
+		"commentsPre3": "GitHub paskyra"
 	},
 	"about": {
 		"title": "Tomo Virtuvės Nuotykiai",

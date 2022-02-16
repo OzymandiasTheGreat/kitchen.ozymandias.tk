@@ -11,7 +11,6 @@ import type { Post } from "../../../../../types/post";
 
 import React, { useState } from "react";
 import {
-	Button,
 	Image,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
@@ -21,7 +20,7 @@ import {
 } from "react-native";
 import Link from "next/link";
 import { useTranslation, useSelectedLanguage } from "next-export-i18n";
-import { A, Article, H1, HR, P, Time } from "@expo/html-elements";
+import { A, Article, EM, H1, HR, P, Time } from "@expo/html-elements";
 import Fade from "react-native-fade-in-out";
 import Header from "../../../../../components/header";
 import Footer from "../../../../../components/footer";
@@ -210,12 +209,25 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 								{ marginHorizontal: "auto" },
 							]}
 							onPress={loadComments}>
-							{t("post.comment")}
+							{t("post.commentsLoad")}
 						</Text>
 					</View>
 				)}
 				{comments && (
 					<View style={[theme?.comment.container]}>
+						<Text
+							style={[
+								theme?.text.body,
+								{ alignSelf: "center", paddingVertical: 15 },
+							]}>
+							{t("post.commentsPre1")}
+							<EM style={[theme?.text.emphasis]}>
+								{t("post.commentsPre2")}
+							</EM>
+							<A href="https://github.com/signup">
+								{t("post.commentsPre3")}
+							</A>
+						</Text>
 						<script
 							src="https://utteranc.es/client.js"
 							// @ts-ignore

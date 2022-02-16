@@ -20,7 +20,10 @@
 		"byline": "by ",
 		"via": "Via ",
 		"tag": "Tagged: ",
-		"comment": "Load Comments"
+		"commentsLoad": "Load Comments",
+		"commentsPre1": "Commenting requires ",
+		"commentsPre2": "a free ",
+		"commentsPre3": "GitHub account"
 	},
 	"about": {
 		"title": "Tomas' Kitchen Escapades",

@@ -53,7 +53,7 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 										key={tag}
 										passHref
 										href={{
-											pathname: `/tag/${tag}`,
+											pathname: `/tags/${tag}`,
 											query: { lang },
 										}}>
 										<A

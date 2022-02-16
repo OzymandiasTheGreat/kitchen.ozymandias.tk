@@ -335,6 +335,21 @@ const dark = {
 			margin: 0,
 		} as TextStyle,
 	},
+	pager: {
+		container: {
+			flex: 1,
+			width: "100%",
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "center",
+			marginVertical: 50,
+		} as ViewStyle,
+		text: {
+			fontSize: 20,
+			textShadowColor: COLOR_BG_DARK,
+			textShadowRadius: 3,
+		} as TextStyle,
+	},
 	tagcloud: {
 		container: {
 			flex: 1,
@@ -772,6 +787,21 @@ const light = {
 			fontSize: 14,
 			opacity: 0.7,
 			margin: 0,
+		} as TextStyle,
+	},
+	pager: {
+		container: {
+			flex: 1,
+			width: "100%",
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "center",
+			marginVertical: 50,
+		} as ViewStyle,
+		text: {
+			fontSize: 20,
+			textShadowColor: COLOR_BG_LIGHTER,
+			textShadowRadius: 3,
 		} as TextStyle,
 	},
 	tagcloud: {
