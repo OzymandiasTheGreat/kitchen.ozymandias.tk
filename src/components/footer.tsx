@@ -44,7 +44,7 @@ const BlogFooter: React.FC<{
 						</Link>
 					)}
 					<Text style={[theme?.text.strong, theme?.pager.text]}>
-						{page + 1} /{" "}
+						{(page || 0) + 1} /{" "}
 						<Link
 							passHref
 							href={{
@@ -54,11 +54,11 @@ const BlogFooter: React.FC<{
 							<A>{total}</A>
 						</Link>
 					</Text>
-					{page + 1 !== total && (
+					{(page || 0) + 1 !== total && (
 						<Link
 							passHref
 							href={{
-								pathname: `./${page + 2}`,
+								pathname: `./${(page || 0) + 2}`,
 								query: { lang, ...query },
 							}}>
 							<A
