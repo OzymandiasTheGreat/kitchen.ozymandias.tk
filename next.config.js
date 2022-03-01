@@ -20,7 +20,12 @@ module.exports = withPlugins([
 			},
 		},
 	],
-	withTM(["recyclerlistview", "@jsamr/react-native-li", "react-native-web"]),
+	withTM([
+		"@ozymandiasthegreat/react-native-markdown",
+		"recyclerlistview",
+		"@jsamr/react-native-li",
+		"react-native-web",
+	]),
 	[
 		withExpo,
 		{

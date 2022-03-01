@@ -1425,15 +1425,25 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@jsamr/counter-style@^2.0.1":
+"@jsamr/counter-style@^2.0.1", "@jsamr/counter-style@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@jsamr/counter-style/-/counter-style-2.0.2.tgz#6f08cfa98e1f0416dc1d7f2d8ac38a8cdb004c5d"
   integrity sha512-2mXudGVtSzVxWEA7B9jZLKjoXUeUFYDDtFrQoC0IFX9/Dszz4t1vZOmafi3JSw/FxD+udMQ+4TAFR8Qs0J3URQ==
 
-"@jsamr/react-native-li@^2.3.0":
+"@jsamr/react-native-li@^2.3.0", "@jsamr/react-native-li@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@jsamr/react-native-li/-/react-native-li-2.3.1.tgz#12a5b5f6e3971cec77b96bee58104eed0ae9314a"
   integrity sha512-Qbo4NEj48SQ4k8FZJHFE2fgZDKTWaUGmVxcIQh3msg5JezLdTMMHuRRDYctfdHI6L0FZGObmEv3haWbIvmol8w==
+
+"@mdi/js@^6.5.95":
+  version "6.5.95"
+  resolved "https://registry.yarnpkg.com/@mdi/js/-/js-6.5.95.tgz#2d895b013408f213252b77c30e0fdaaba6dc8b4b"
+  integrity sha512-x/bwEoAGP+Mo10Dfk5audNIPi7Yz8ZBrILcbXLW3ShOI/njpgodzpgpC2WYK3D2ZSC392peRRemIFb/JsyzzYQ==
+
+"@mdi/react@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@mdi/react/-/react-1.5.0.tgz#461d2064ba12d509723bffc95e2f7169a6ac884a"
+  integrity sha512-NztRgUxSYD+ImaKN94Tg66VVVqXj4SmlDGzZoz48H9riJ+Awha56sfXH2fegw819NWo7KI3oeS1Es0lNQqwr0w==
 
 "@native-html/css-processor@1.11.0":
   version "1.11.0"
@@ -1560,6 +1570,23 @@
   dependencies:
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
+
+"@ozymandiasthegreat/react-native-markdown@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ozymandiasthegreat/react-native-markdown/-/react-native-markdown-0.1.1.tgz#1986a7a9e8aa86e15b638c2757a518763b519617"
+  integrity sha512-TjUXUw1EIB/rKJ/8f4YRuxd26jL61AZgWRvDd1gQwrFdlEiRC7yE23vvLNbyfDQpHQTiyWP6seyfA/BaFkb3qg==
+  dependencies:
+    "@expo/html-elements" "^0.1.0"
+    "@jsamr/counter-style" "^2.0.2"
+    "@jsamr/react-native-li" "^2.3.1"
+    "@types/react-syntax-highlighter" "^13.5.2"
+    color-string "^1.9.0"
+    react-native-render-html "^6.3.4"
+    react-native-syntax-highlighter "^2.1.0"
+    remark-gfm "^3.0.1"
+    remark-parse "^10.0.1"
+    string.prototype.matchall "^4.0.6"
+    unified "^10.1.1"
 
 "@prefresh/babel-plugin@0.4.1":
   version "0.4.1"
@@ -3302,7 +3329,7 @@ color-name@^1.0.0, color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-color-string@^1.6.0:
+color-string@^1.6.0, color-string@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.9.0.tgz#63b6ebd1bec11999d1df3a79a7569451ac2be8aa"
   integrity sha512-9Mrz2AQLefkH1UvASKj6v6hj/7eWgjnT/cVsR8CumieLoT+g900exWeNogqtweI8dxloXN9BDQTYro1oWu/5CQ==
