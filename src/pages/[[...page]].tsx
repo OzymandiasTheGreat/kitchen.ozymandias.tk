@@ -55,7 +55,7 @@ const App: React.FC<{
 				}}
 				scrollEventThrottle={100}
 				stickyHeaderIndices={[0]}>
-				<Header opaque={header} />
+				<Header opaque={header} style={{ width: "100%" }} />
 				<Masonry
 					data={posts}
 					renderItem={renderItem}
