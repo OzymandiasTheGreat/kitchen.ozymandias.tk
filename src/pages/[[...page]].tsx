@@ -24,7 +24,13 @@ const App: React.FC<{
 	const [header, setHeader] = useState(true);
 	const [columns, setColumns] = useState(3);
 
-	useEffect(() => setColumns(width < 600 ? 2 : 3), [width]);
+	useEffect(
+		() =>
+			setColumns(
+				Math.max(1, Math.min(3, Math.floor((width - 100) / 282))),
+			),
+		[width],
+	);
 
 	const renderItem = ({
 		item: [slug, post],
