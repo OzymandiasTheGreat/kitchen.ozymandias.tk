@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Text, View } from "react-native";
+import { useColorScheme, StyleSheet, Text, View } from "react-native";
 import { A, Footer, P } from "@expo/html-elements";
+import Icon from "@mdi/react";
+import { mdiCopyright } from "@mdi/js";
 import { useTranslation, useSelectedLanguage } from "next-export-i18n";
-import useTheme from "../pages/_theme";
+import {
+	COLOR_SITE_BG_DARK,
+	COLOR_TEXT_BG_DARK,
+	COLOR_TEXT_BG_LIGHT,
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	FONT_REGULAR,
+	STYLE_STRONG,
+} from "../theme";
 
 const BlogFooter: React.FC<{
 	page?: number;
 	total?: number;
 	query?: Record<string, string>;
 }> = ({ page, total, query = {} }) => {
-	const theme = useTheme();
 	const { t } = useTranslation();
 	const { lang } = useSelectedLanguage();
+	const scheme = useColorScheme();
+	const [dark, setDark] = useState(false);
 	const pager = typeof page !== "undefined" && typeof total !== "undefined";
+	const pagerShadowColor = dark ? COLOR_SITE_BG_DARK : COLOR_TEXT_BG_LIGHT;
+	const pagerShadowRadius = 7;
+	const paragraphColor = dark ? COLOR_TEXT_FG_DARK : COLOR_TEXT_FG_LIGHT;
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
 
 	return (
 		<View
@@ -25,7 +41,15 @@ const BlogFooter: React.FC<{
 				},
 			]}>
 			{pager && (
-				<View style={[theme?.pager.container]}>
+				<View
+					style={{
+						flex: 1,
+						width: "100%",
+						flexDirection: "row",
+						alignItems: "center",
+						justifyContent: "center",
+						marginVertical: 50,
+					}}>
 					{!!page && (
 						<Link
 							passHref
@@ -35,15 +59,29 @@ const BlogFooter: React.FC<{
 							}}>
 							<A
 								style={[
-									theme?.text.strong,
-									theme?.pager.text,
-									{ fontSize: 32, marginHorizontal: 15 },
+									STYLE_STRONG,
+									{
+										color: paragraphColor,
+										fontSize: 32,
+										textShadowColor: pagerShadowColor,
+										textShadowRadius: pagerShadowRadius,
+										marginHorizontal: 15,
+									},
 								]}>
 								{"‹"}
 							</A>
 						</Link>
 					)}
-					<Text style={[theme?.text.strong, theme?.pager.text]}>
+					<Text
+						style={[
+							STYLE_STRONG,
+							{
+								color: paragraphColor,
+								fontSize: 20,
+								textShadowColor: pagerShadowColor,
+								textShadowRadius: pagerShadowRadius,
+							},
+						]}>
 						{(page || 0) + 1} /{" "}
 						<Link
 							passHref
@@ -63,10 +101,12 @@ const BlogFooter: React.FC<{
 							}}>
 							<A
 								style={[
-									theme?.text.strong,
-									theme?.pager.text,
+									STYLE_STRONG,
 									{
+										color: paragraphColor,
 										fontSize: 32,
+										textShadowColor: pagerShadowColor,
+										textShadowRadius: pagerShadowRadius,
 										marginHorizontal: 15,
 									},
 								]}>
@@ -76,11 +116,22 @@ const BlogFooter: React.FC<{
 					)}
 				</View>
 			)}
-			<Footer style={[theme?.footer.container]}>
+			<Footer
+				style={{
+					backgroundColor: dark
+						? COLOR_TEXT_BG_DARK
+						: COLOR_TEXT_BG_LIGHT,
+					alignItems: "center",
+					justifyContent: "space-around",
+					width: "100%",
+					height: 275,
+					paddingVertical: 50,
+				}}>
 				<P
 					style={[
-						theme?.footer.paragraph,
+						styles.paragraph,
 						{
+							color: paragraphColor,
 							display: "flex",
 							flexDirection: "row",
 							alignItems: "center",
@@ -104,13 +155,24 @@ const BlogFooter: React.FC<{
 						<A>{t("site.archive")}</A>
 					</Link>
 				</P>
-				<P style={[theme?.footer.paragraph]}>
+				<P style={[styles.paragraph, { color: paragraphColor }]}>
 					<A href="https://creativecommons.org/licenses/by/4.0/">
 						{t("site.cc")}
 					</A>
 				</P>
-				<P style={[theme?.footer.paragraph]}>{t("site.copyright")}</P>
-				<P style={[theme?.footer.paragraph]}>
+				<P style={[styles.paragraph, { color: paragraphColor }]}>
+					<Icon
+						path={mdiCopyright}
+						size="24px"
+						color={paragraphColor}
+						style={{
+							verticalAlign: "middle",
+							marginRight: "10px",
+						}}
+					/>
+					{t("site.copyright")}
+				</P>
+				<P style={[styles.paragraph, { color: paragraphColor }]}>
 					<Link
 						passHref
 						href={{ pathname: "/credits", query: { lang } }}>
@@ -121,5 +183,13 @@ const BlogFooter: React.FC<{
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	paragraph: {
+		fontFamily: FONT_REGULAR,
+		fontSize: 14,
+		opacity: 0.7,
+	},
+});
 
 export default BlogFooter;
