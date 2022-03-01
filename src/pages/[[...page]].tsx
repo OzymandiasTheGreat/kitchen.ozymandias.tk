@@ -8,13 +8,9 @@ import { POSTSDIR, POSTSPERPAGE } from "../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../types/post";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
-import Link from "next/link";
-import { A } from "@expo/html-elements";
-import { useSelectedLanguage } from "next-export-i18n";
+import React, { useEffect, useState } from "react";
+import { useWindowDimensions, SafeAreaView, ScrollView } from "react-native";
 import Masonry from "@react-native-seoul/masonry-list";
-import useTheme from "./_theme";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import Card from "../components/card";
@@ -24,28 +20,11 @@ const App: React.FC<{
 	page: number;
 	total: number;
 }> = ({ posts, page, total }) => {
-	const theme = useTheme();
-	const { lang } = useSelectedLanguage();
-	const scrollView = useRef<ScrollView>();
+	const { width } = useWindowDimensions();
 	const [header, setHeader] = useState(true);
+	const [columns, setColumns] = useState(3);
 
-	const headerCallback = useCallback(
-		(ev: any) => {
-			if (ev.target.scrollTop <= 100 !== header) {
-				setHeader(ev.target.scrollTop <= 100);
-			}
-		},
-		[header],
-	);
-
-	useEffect(() => {
-		let node: any;
-		if (scrollView.current) {
-			node = scrollView.current.getScrollableNode();
-			node.addEventListener("scroll", headerCallback);
-		}
-		return () => node?.removeEventListener("scroll", headerCallback);
-	}, [headerCallback]);
+	useEffect(() => setColumns(width < 600 ? 2 : 3), [width]);
 
 	const renderItem = ({
 		item: [slug, post],
@@ -58,20 +37,27 @@ const App: React.FC<{
 	);
 
 	return (
-		<SafeAreaView style={[theme?.main.container]}>
-			<Masonry
-				innerRef={scrollView}
-				ListHeaderComponent={<Header opaque={header}></Header>}
-				ListHeaderComponentStyle={[theme?.header.container]}
-				ListFooterComponent={
-					<Footer page={page} total={total}></Footer>
-				}
-				data={posts}
-				renderItem={renderItem}
-				stickyHeaderIndices={[0]}
-				centerContent={true}
-				numColumns={theme?.card.columns}
-				contentContainerStyle={[theme?.card.list]}></Masonry>
+		<SafeAreaView
+			style={{
+				flex: 1,
+			}}>
+			<ScrollView
+				onScroll={(ev) => {
+					if (ev.nativeEvent.contentOffset.y <= 100 !== header) {
+						setHeader(!header);
+					}
+				}}
+				scrollEventThrottle={100}
+				stickyHeaderIndices={[0]}>
+				<Header opaque={header} />
+				<Masonry
+					data={posts}
+					renderItem={renderItem}
+					numColumns={columns}
+					contentContainerStyle={{ alignItems: "center" }}
+				/>
+				<Footer page={page} total={total} />
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
