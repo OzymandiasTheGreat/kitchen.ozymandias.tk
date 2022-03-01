@@ -26,7 +26,6 @@ import {
 	setOpacity,
 	STYLE_HEADING,
 } from "../theme";
-import useTheme from "../pages/_theme";
 
 const languages = Object.keys(translations);
 const flags: Record<string, string> = {
@@ -84,6 +83,7 @@ const BlogHeader: React.FC<{
 	const scheme = useColorScheme();
 	const [dark, setDark] = useState(false);
 	const { width } = useWindowDimensions();
+	const [visible, setVisible] = useState(true);
 	const backgroundAnimation = useRef(new Animated.Value(0)).current;
 	const backgroundColor = backgroundAnimation.interpolate({
 		inputRange: [0, 1],
@@ -103,6 +103,7 @@ const BlogHeader: React.FC<{
 	const params = new URLSearchParams({ lang }).toString();
 
 	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(() => setVisible(opaque && width > 800), [opaque, width]);
 	useEffect(
 		() => {
 			Animated.timing(backgroundAnimation, {
@@ -137,7 +138,7 @@ const BlogHeader: React.FC<{
 					height,
 				},
 			]}>
-			<Profile visible={opaque && width > 800}></Profile>
+			<Profile visible={visible}></Profile>
 			<View
 				style={{
 					flexDirection: "row",
