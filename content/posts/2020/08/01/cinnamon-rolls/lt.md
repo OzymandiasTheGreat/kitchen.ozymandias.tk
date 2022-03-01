@@ -43,6 +43,6 @@ Jei turite blenderį, galite naudoti jį.
 
 Iškočiokite tešlą į maždaug stačiakampį. Naudokite šaukštą arba sviestinį peilį užtepti įdarą ant tešlos tolygiai, palikdami porą centimetrų nuo kraštų.
 
-Suvyniokite tešla į "dešrą" ir su dantų siūlu supjaustykite į ~3cm riekelias. Išdėliokite ant kepimo popieriumi išklotos skardos, palikdami kelis centimetrus tarp riekelių.
+Suvyniokite tešla į "dešrą" ir su dantų siūlu supjaustykite į ~3cm riekeles. Išdėliokite ant kepimo popieriumi išklotos skardos, palikdami kelis centimetrus tarp riekelių.
 
 Kepkite kol pageltonuos, bet viduriukas liks minkštokas.
