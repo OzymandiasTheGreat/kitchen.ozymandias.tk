@@ -1,13 +1,17 @@
 import "./fallback.css";
 import "setimmediate";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { SafeAreaView } from "react-native";
-import useTheme from "./_theme";
+import { useColorScheme, SafeAreaView } from "react-native";
 import TileBackground from "../components/tiles";
+import { COLOR_SITE_BG_DARK, COLOR_SITE_BG_LIGHT } from "../theme";
 
 function App({ Component, pageProps }: AppProps) {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const [dark, setDark] = useState(false);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
 
 	return (
 		<>
@@ -16,10 +20,16 @@ function App({ Component, pageProps }: AppProps) {
 				<link rel="icon" type="image/png" href="/favicon.png" />
 			</Head>
 
-			<SafeAreaView style={[theme?.main]}>
+			<SafeAreaView
+				style={{
+					flex: 1,
+					backgroundColor: dark
+						? COLOR_SITE_BG_DARK
+						: COLOR_SITE_BG_LIGHT,
+				}}>
 				<TileBackground
 					src="/tile.svg"
-					color={theme?.main.backgroundColor as string}>
+					color={dark ? COLOR_SITE_BG_DARK : COLOR_SITE_BG_LIGHT}>
 					<Component {...pageProps} />
 				</TileBackground>
 			</SafeAreaView>
