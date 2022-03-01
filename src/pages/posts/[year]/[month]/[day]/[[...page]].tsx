@@ -7,8 +7,10 @@ import { POSTSDIR, POSTSPERPAGE } from "../../../../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../../../../types/post";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+	useColorScheme,
+	useWindowDimensions,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
 	SafeAreaView,
@@ -17,10 +19,14 @@ import {
 } from "react-native";
 import { useSelectedLanguage } from "next-export-i18n";
 import Masonry from "@react-native-seoul/masonry-list";
-import useTheme from "../../../../_theme";
 import Header from "../../../../../components/header";
 import Footer from "../../../../../components/footer";
 import Card from "../../../../../components/card";
+import {
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	STYLE_HEADING,
+} from "../../../../../theme";
 
 const Day: React.FC<{
 	year: string;
@@ -30,9 +36,21 @@ const Day: React.FC<{
 	page: number;
 	total: number;
 }> = ({ year, month, day, posts, page, total }) => {
-	const theme = useTheme();
 	const { lang } = useSelectedLanguage();
+	const scheme = useColorScheme();
+	const { width } = useWindowDimensions();
+	const [dark, setDark] = useState(false);
+	const [columns, setColumns] = useState(3);
 	const [header, setHeader] = useState(true);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(
+		() =>
+			setColumns(
+				Math.max(1, Math.min(3, Math.floor((width - 100) / 282))),
+			),
+		[width],
+	);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -52,19 +70,24 @@ const Day: React.FC<{
 	}) => <Card slug={slug} post={post}></Card>;
 
 	return (
-		<SafeAreaView style={[theme?.main.container]}>
+		<SafeAreaView style={{ flex: 1 }}>
 			<ScrollView
 				stickyHeaderIndices={[0]}
 				onScroll={headerCallback}
-				scrollEventThrottle={100}
-				style={[theme?.archive.scroller]}>
+				scrollEventThrottle={100}>
 				<Header opaque={header}></Header>
 				<Masonry
 					ListHeaderComponent={
 						<Text
 							style={[
-								theme?.text.heading,
-								{ marginBottom: 40 },
+								STYLE_HEADING,
+								{
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+									fontSize: 28,
+									marginBottom: 40,
+								},
 							]}>
 							{new Date(
 								`${year}-${month}-${day}`,
@@ -74,9 +97,8 @@ const Day: React.FC<{
 					data={posts}
 					renderItem={renderItem}
 					centerContent={true}
-					numColumns={theme?.card.columns}
-					containerStyle={[{ minHeight: "100%" }]}
-					contentContainerStyle={[theme?.card.list]}></Masonry>
+					numColumns={columns}
+					contentContainerStyle={{ alignItems: "center" }}></Masonry>
 				<Footer
 					page={page}
 					total={total}
