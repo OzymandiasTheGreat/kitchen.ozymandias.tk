@@ -44,6 +44,9 @@ const BlogCard: React.FC<{ slug: string; post: Post }> = ({ slug, post }) => {
 							style={[
 								STYLE_HEADING,
 								{
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
 									fontSize: 24,
 									paddingVertical: 10,
 									paddingHorizontal: 15,
