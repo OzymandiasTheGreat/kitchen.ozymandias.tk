@@ -1,13 +1,21 @@
 html {
 	height: 100% !important;
-	color: #efefef;
+	color: #fafafa;
 	background-color: #212121;
+}
+
+td * {
+	color: #fafafa !important;
 }
 
 @media (prefers-color-scheme: light) {
 	html {
 		color: #212121;
 		background-color: #ffd54f;
+	}
+
+	td * {
+		color: #212121 !important;
 	}
 }
 
@@ -23,38 +31,6 @@ body {
 
 #via, #tag {
 	order: 11000;
-}
-
-ul {
-	display: block !important;
-}
-
-li {
-	display: list-item !important;
-	margin-left: 15px !important;
-}
-
-li::marker {
-	content: "🍏 ";
-}
-
-a {
-	color: #4fc3f7 !important;
-}
-
-table {
-	display: table !important;
-	border-collapse: collapse !important;
-}
-
-tr {
-	display: table-row !important;
-	border-collapse: collapse !important;
-}
-
-td {
-	display: table-cell !important;
-	border-collapse: collapse !important;
 }
 
 div[id^=footnote] {

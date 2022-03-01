@@ -6,11 +6,12 @@ import matter, { GrayMatterFile } from "gray-matter";
 import { parseMarkdown } from "../../../../../util/markdown";
 import { POSTSDIR } from "../../../../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import type { Root } from "mdast";
 import type { Post } from "../../../../../types/post";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+	useColorScheme,
+	useWindowDimensions,
 	Image,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
@@ -20,20 +21,37 @@ import {
 } from "react-native";
 import Link from "next/link";
 import { useTranslation, useSelectedLanguage } from "next-export-i18n";
-import { A, Article, EM, H1, HR, P, Time } from "@expo/html-elements";
-import Fade from "react-native-fade-in-out";
+import { A, EM, H1, HR, Main, P, Time } from "@expo/html-elements";
+import Icon from "@mdi/react";
+import { mdiCopyright } from "@mdi/js";
+import { Markdown } from "@ozymandiasthegreat/react-native-markdown/src";
 import Header from "../../../../../components/header";
 import Footer from "../../../../../components/footer";
-import useTheme from "../../../../_theme";
-import { Markdown } from "../../../../../components/markdown";
+import {
+	COLOR_LINK,
+	COLOR_TEXT_BG_DARK,
+	COLOR_TEXT_BG_LIGHT,
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	FONT_CODE,
+	FONT_REGULAR,
+	setOpacity,
+	STYLE_EMPHASIS,
+	STYLE_HEADING,
+	STYLE_REGULAR,
+	STYLE_STRONG,
+} from "../../../../../theme";
 
 const PostDate: React.FC<{
 	publish: string;
 	edit: string | null;
 	lang: string;
 }> = ({ publish, edit, lang }) => {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const [dark, setDark] = useState(false);
 	const { t } = useTranslation();
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
 
 	if (edit) {
 		const edited = new Date(edit).toLocaleString(lang, {
@@ -49,18 +67,19 @@ const PostDate: React.FC<{
 			day: "numeric",
 		});
 		return (
-			<P style={[theme?.text.body, theme?.article.byline.date]}>
+			<P
+				style={[
+					STYLE_REGULAR,
+					{
+						color: dark ? COLOR_TEXT_FG_DARK : COLOR_TEXT_FG_LIGHT,
+						fontSize: 12,
+					},
+				]}>
 				<Text>{t("post.edited")}</Text>
-				<Time
-					style={[theme?.text.strong, theme?.article.byline.date]}
-					dateTime={edited}>
-					{edited}
-				</Time>
+				<Time dateTime={edited}>{edited}</Time>
 				{"\n"}
 				<Text>{t("post.published.edited")}</Text>
-				<Time
-					style={[theme?.text.strong, theme?.article.byline.date]}
-					dateTime={published}>
+				<Time style={[STYLE_STRONG]} dateTime={published}>
 					{published}
 				</Time>
 			</P>
@@ -74,11 +93,16 @@ const PostDate: React.FC<{
 		minute: "2-digit",
 	});
 	return (
-		<P style={[theme?.text.body, theme?.article.byline.date]}>
+		<P
+			style={[
+				STYLE_REGULAR,
+				{
+					color: dark ? COLOR_TEXT_FG_DARK : COLOR_TEXT_FG_LIGHT,
+					fontSize: 12,
+				},
+			]}>
 			<Text>{t("post.published.noedit")}</Text>
-			<Time
-				style={[theme?.text.strong, theme?.article.byline.date]}
-				dateTime={published}>
+			<Time style={[STYLE_STRONG]} dateTime={published}>
 				{published}
 			</Time>
 		</P>
@@ -86,12 +110,17 @@ const PostDate: React.FC<{
 };
 
 const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const { width } = useWindowDimensions();
+	const [dark, setDark] = useState(false);
+	const [small, setSmall] = useState(true);
 	const { lang } = useSelectedLanguage();
 	const { t } = useTranslation();
 	const [header, setHeader] = useState(true);
 	const [comments, setComments] = useState(false);
 
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(() => setSmall(width < 600), [width]);
 	const headerOpaqueCallback = (
 		ev: NativeSyntheticEvent<NativeScrollEvent>,
 	) => {
@@ -109,29 +138,63 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 				stickyHeaderIndices={[0]}>
 				<Header opaque={header}></Header>
 				{Object.entries(post).map(([contentLang, content]) => (
-					<Fade
+					<View
 						key={contentLang}
-						visible={lang === contentLang}
-						duration={700}
-						useNativeDriver={false}
 						style={{
 							display: lang === contentLang ? "flex" : "none",
 						}}>
-						<Article style={[theme?.article.container]}>
-							<H1 style={[theme?.text.heading]}>
+						<Main
+							style={{
+								backgroundColor: dark
+									? COLOR_TEXT_BG_DARK
+									: COLOR_TEXT_BG_LIGHT,
+								alignSelf: "center",
+								width: small ? "98%" : "80%",
+								maxWidth: 800,
+								paddingVertical: 20,
+								paddingHorizontal: 50,
+								borderRadius: 3,
+							}}>
+							<H1
+								style={[
+									STYLE_HEADING,
+									{
+										color: dark
+											? COLOR_TEXT_FG_DARK
+											: COLOR_TEXT_FG_LIGHT,
+										fontSize: 28,
+									},
+								]}>
 								{content.title}
 							</H1>
-							<View style={[theme?.article.byline.container]}>
+							<View
+								style={{
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "space-between",
+									width: "100%",
+									marginBottom: 30,
+								}}>
 								<Text
 									style={[
-										theme?.text.body,
-										theme?.article.byline.author,
+										STYLE_REGULAR,
+										{
+											color: dark
+												? COLOR_TEXT_FG_DARK
+												: COLOR_TEXT_FG_LIGHT,
+											fontSize: 14,
+										},
 									]}>
 									{t("post.byline")}
 									<Text
 										style={[
-											theme?.text.emphasis,
-											theme?.article.byline.author,
+											STYLE_EMPHASIS,
+											{
+												color: dark
+													? COLOR_TEXT_FG_DARK
+													: COLOR_TEXT_FG_LIGHT,
+												fontSize: 14,
+											},
 										]}>
 										Tomas Ravinskas
 									</Text>
@@ -142,30 +205,101 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 									edit={content.edited}></PostDate>
 							</View>
 							{content.image && (
-								<View style={[theme?.article.image.container]}>
+								<View
+									style={{
+										alignItems: "center",
+										marginBottom: 30,
+									}}>
 									<Image
 										source={{ uri: content.image.uri }}
-										style={
-											theme?.article.image.style
-										}></Image>
+										style={{
+											width: "100%",
+											minHeight: 380,
+											maxHeight: 500,
+											resizeMode: "cover",
+										}}></Image>
 									<Text
 										style={[
-											theme?.text.body,
-											theme?.article.image.copyright,
+											STYLE_REGULAR,
+											{
+												color: dark
+													? setOpacity(
+															COLOR_TEXT_FG_DARK,
+															0.7,
+													  )
+													: setOpacity(
+															COLOR_TEXT_FG_LIGHT,
+															0.7,
+													  ),
+												fontSize: 13,
+											},
 										]}>
-										©️ {content.image.copyright}
+										<Icon
+											path={mdiCopyright}
+											color={
+												dark
+													? setOpacity(
+															COLOR_TEXT_FG_DARK,
+															0.7,
+													  )
+													: setOpacity(
+															COLOR_TEXT_FG_LIGHT,
+															0.7,
+													  )
+											}
+											size="14px"
+											style={{
+												verticalAlign: "middle",
+												marginRight: "10px",
+											}}
+										/>
+										{content.image.copyright}
 									</Text>
 								</View>
 							)}
 							<Markdown
-								node={content.content as Root}></Markdown>
-							<HR style={[theme?.markdown.hr]}></HR>
+								source={{ ast: content.content }}
+								style={{ width: "100%" }}
+								pStyle={{
+									...STYLE_REGULAR,
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+								}}
+								hStyle={{
+									...STYLE_HEADING,
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+								}}
+								aStyle={{ color: COLOR_LINK }}
+								fontMap={{
+									normal: FONT_REGULAR,
+									italic: FONT_REGULAR,
+									bold: FONT_REGULAR,
+									monospace: FONT_CODE,
+								}}></Markdown>
+							<HR
+								style={{
+									backgroundColor: dark
+										? setOpacity(COLOR_TEXT_FG_DARK, 0.75)
+										: setOpacity(
+												COLOR_TEXT_FG_LIGHT,
+												0.75,
+										  ),
+									width: "95%",
+								}}></HR>
 							{content.source && (
 								<P
 									nativeID="via"
 									style={[
-										theme?.text.body,
-										theme?.article.footer.source,
+										STYLE_REGULAR,
+										{
+											color: dark
+												? COLOR_TEXT_FG_DARK
+												: COLOR_TEXT_FG_LIGHT,
+											fontSize: 14,
+										},
 									]}>
 									{t("post.via")}
 									<A href={content.source}>
@@ -176,8 +310,20 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 							<P
 								nativeID="tag"
 								style={[
-									theme?.text.body,
-									theme?.article.footer.tag,
+									STYLE_REGULAR,
+									{
+										color: dark
+											? setOpacity(
+													COLOR_TEXT_FG_DARK,
+													0.6,
+											  )
+											: setOpacity(
+													COLOR_TEXT_FG_LIGHT,
+													0.6,
+											  ),
+										fontSize: 13,
+										marginRight: 10,
+									},
 								]}>
 								{t("post.tag")}
 								{content.tags.map((tag) => (
@@ -190,23 +336,51 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 										}}>
 										<A
 											style={[
-												theme?.text.emphasis,
-												theme?.article.footer.tag,
+												STYLE_EMPHASIS,
+												{
+													color: dark
+														? setOpacity(
+																COLOR_TEXT_FG_DARK,
+																0.6,
+														  )
+														: setOpacity(
+																COLOR_TEXT_FG_LIGHT,
+																0.6,
+														  ),
+													fontSize: 13,
+													marginRight: 10,
+												},
 											]}>
 											{tag}
 										</A>
 									</Link>
 								))}
 							</P>
-						</Article>
-					</Fade>
+						</Main>
+					</View>
 				))}
 				{!comments && (
-					<View style={[theme?.comment.button]}>
+					<View
+						style={{
+							width: 300,
+							alignSelf: "center",
+							backgroundColor: dark
+								? COLOR_TEXT_BG_DARK
+								: COLOR_TEXT_BG_LIGHT,
+							paddingVertical: 10,
+							borderRadius: 3,
+							margin: 30,
+						}}>
 						<Text
 							style={[
-								theme?.text.strong,
-								{ marginHorizontal: "auto" },
+								STYLE_REGULAR,
+								STYLE_STRONG,
+								{
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+									marginHorizontal: "auto",
+								},
 							]}
 							onPress={loadComments}>
 							{t("post.commentsLoad")}
@@ -214,14 +388,31 @@ const PostRenderer: React.FC<{ post: Post }> = ({ post }) => {
 					</View>
 				)}
 				{comments && (
-					<View style={[theme?.comment.container]}>
+					<View
+						style={{
+							flex: 1,
+							alignSelf: "center",
+							width: small ? "98%" : "80%",
+							maxWidth: 800,
+							backgroundColor: dark
+								? COLOR_TEXT_BG_DARK
+								: COLOR_TEXT_BG_LIGHT,
+							borderRadius: 3,
+							margin: 30,
+						}}>
 						<Text
 							style={[
-								theme?.text.body,
-								{ alignSelf: "center", paddingVertical: 15 },
+								STYLE_REGULAR,
+								{
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+									alignSelf: "center",
+									paddingVertical: 15,
+								},
 							]}>
 							{t("post.commentsPre1")}
-							<EM style={[theme?.text.emphasis]}>
+							<EM style={[STYLE_EMPHASIS]}>
 								{t("post.commentsPre2")}
 							</EM>
 							<A href="https://github.com/signup">
