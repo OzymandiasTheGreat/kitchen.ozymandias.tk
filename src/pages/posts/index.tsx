@@ -1,12 +1,11 @@
-import { join, relative, sep } from "path";
-import fs from "fs/promises";
+import { relative, sep } from "path";
 import klaw from "klaw";
 import { POSTSDIR } from "../../constants";
 import type { GetStaticProps } from "next";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-	Linking,
+	useColorScheme,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 	SafeAreaView,
@@ -17,14 +16,24 @@ import {
 import { useSelectedLanguage } from "next-export-i18n";
 import Calendar from "react-native-calendar-picker";
 import moment from "moment-timezone";
-import useTheme from "../_theme";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
+import {
+	COLOR_TEXT_BG_DARK,
+	COLOR_TEXT_BG_LIGHT,
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	STYLE_REGULAR,
+	STYLE_STRONG,
+} from "../../theme";
 
 const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const [dark, setDark] = useState(false);
 	const { lang } = useSelectedLanguage();
 	const [header, setHeader] = useState(true);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -60,14 +69,33 @@ const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
 	};
 
 	return (
-		<SafeAreaView style={[theme?.main.container]}>
+		<SafeAreaView
+			style={{
+				flex: 1,
+			}}>
 			<ScrollView
 				stickyHeaderIndices={[0]}
 				onScroll={headerCallback}
-				scrollEventThrottle={100}
-				style={[theme?.archive.scroller]}>
+				scrollEventThrottle={100}>
 				<Header opaque={header}></Header>
-				<View style={[theme?.archive.container]}>
+				<View
+					style={{
+						backgroundColor: dark
+							? COLOR_TEXT_BG_DARK
+							: COLOR_TEXT_BG_LIGHT,
+						flex: 1,
+						alignSelf: "center",
+						flexDirection: "row",
+						flexWrap: "wrap",
+						alignItems: "baseline",
+						justifyContent: "space-around",
+						width: "80%",
+						maxWidth: 800,
+						minHeight: 300,
+						padding: 50,
+						borderRadius: 3,
+						marginBottom: 50,
+					}}>
 					{Object.entries(dates)
 						.sort(([a, _], [b, $]) => a.localeCompare(b))
 						.map(([month, days]) => {
@@ -76,14 +104,33 @@ const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
 								<View key={month}>
 									<Text
 										style={[
-											theme?.text.strong,
-											theme?.archive.heading,
+											STYLE_STRONG,
+											{
+												color: dark
+													? COLOR_TEXT_FG_DARK
+													: COLOR_TEXT_FG_LIGHT,
+												fontSize: 16,
+												alignSelf: "center",
+											},
 										]}>
 										{month}
 									</Text>
 									<Calendar
-										width={theme?.archive.width}
-										height={theme?.archive.height}
+										width={300}
+										height={260}
+										weekdays={
+											lang === "lt"
+												? [
+														"Pr",
+														"An",
+														"Tr",
+														"Kt",
+														"Pn",
+														"Št",
+														"Sk",
+												  ]
+												: undefined
+										}
 										// @ts-ignore
 										initialDate={initial}
 										disabledDates={(date) =>
@@ -94,21 +141,32 @@ const Archive: React.FC<{ dates: Record<string, string[]> }> = ({ dates }) => {
 											display: "none",
 										}}
 										textStyle={[
-											theme?.text.body,
-											theme?.archive.text,
+											STYLE_REGULAR,
+											{
+												color: dark
+													? COLOR_TEXT_FG_DARK
+													: COLOR_TEXT_FG_LIGHT,
+												fontSize: 14,
+											},
 										]}
 										disabledDatesTextStyle={[
-											theme?.text.body,
-											theme?.archive.disabled,
+											STYLE_REGULAR,
+											{
+												color: dark
+													? COLOR_TEXT_FG_DARK
+													: COLOR_TEXT_FG_LIGHT,
+												fontSize: 13,
+												opacity: 0.3,
+											},
 										]}
 										selectedDayTextColor={
-											theme?.archive.selectedColor
+											dark
+												? COLOR_TEXT_FG_DARK
+												: COLOR_TEXT_FG_LIGHT
 										}
 										selectedDayStyle={[
 											{
-												backgroundColor:
-													theme?.archive
-														.selectedBackground,
+												backgroundColor: "transparent",
 											},
 										]}
 										startFromMonday={true}
