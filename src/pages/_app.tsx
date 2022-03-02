@@ -18,6 +18,10 @@ function App({ Component, pageProps }: AppProps) {
 			<Head>
 				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 				<link rel="icon" type="image/png" href="/favicon.png" />
+				<script
+					src="https://cdn.jsdelivr.net/gh/virae/we-stand-with-ukraine@v1.0.1/badge.js"
+					async
+				/>
 			</Head>
 
 			<SafeAreaView
