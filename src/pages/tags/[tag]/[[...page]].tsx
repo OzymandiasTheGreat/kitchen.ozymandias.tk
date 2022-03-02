@@ -7,20 +7,26 @@ import { POSTSDIR, POSTSPERPAGE } from "../../../constants";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { Post } from "../../../types/post";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+	useColorScheme,
+	useWindowDimensions,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 	SafeAreaView,
 	ScrollView,
 	Text,
 } from "react-native";
-import { useSelectedLanguage, useTranslation } from "next-export-i18n";
+import { useTranslation } from "next-export-i18n";
 import Masonry from "@react-native-seoul/masonry-list";
-import useTheme from "../../_theme";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import Card from "../../../components/card";
+import {
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	STYLE_HEADING,
+} from "../../../theme";
 
 const TagListing: React.FC<{
 	tag: string;
@@ -28,11 +34,21 @@ const TagListing: React.FC<{
 	page: number;
 	total: number;
 }> = ({ tag, posts, page, total }) => {
-	const theme = useTheme();
-	const { lang } = useSelectedLanguage();
+	const scheme = useColorScheme();
+	const { width } = useWindowDimensions();
 	const { t } = useTranslation();
-	const scrollView = useRef<ScrollView>();
+	const [dark, setDark] = useState(false);
 	const [header, setHeader] = useState(true);
+	const [columns, setColumns] = useState(3);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(
+		() =>
+			setColumns(
+				Math.max(1, Math.min(3, Math.floor((width - 100) / 282))),
+			),
+		[width],
+	);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -54,21 +70,29 @@ const TagListing: React.FC<{
 	);
 
 	return (
-		<SafeAreaView style={[theme?.main.container]}>
+		<SafeAreaView
+			style={{
+				flex: 1,
+			}}>
 			<ScrollView stickyHeaderIndices={[0]} onScroll={headerCallback}>
 				<Header opaque={header}></Header>
 				<Masonry
-					innerRef={scrollView}
 					ListHeaderComponent={
 						<Text
 							style={[
-								theme?.text.heading,
-								theme?.tagcloud.header,
+								STYLE_HEADING,
+								{
+									color: dark
+										? COLOR_TEXT_FG_DARK
+										: COLOR_TEXT_FG_LIGHT,
+									fontSize: 28,
+									alignSelf: "center",
+									marginBottom: 20,
+								},
 							]}>
 							{t("post.tag")} {tag}
 						</Text>
 					}
-					ListHeaderComponentStyle={[theme?.header.container]}
 					ListFooterComponent={
 						<Footer
 							page={page}
@@ -78,8 +102,8 @@ const TagListing: React.FC<{
 					data={posts}
 					renderItem={renderItem}
 					centerContent={true}
-					numColumns={theme?.card.columns}
-					contentContainerStyle={[theme?.card.list]}></Masonry>
+					numColumns={columns}
+					contentContainerStyle={{ alignItems: "center" }}></Masonry>
 			</ScrollView>
 		</SafeAreaView>
 	);
