@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+	useColorScheme,
+	useWindowDimensions,
 	Image,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
@@ -10,14 +12,27 @@ import {
 } from "react-native";
 import { useTranslation } from "next-export-i18n";
 import { A, LI, P, UL } from "@expo/html-elements";
-import useTheme from "./_theme";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import {
+	COLOR_LINK,
+	COLOR_TEXT_BG_DARK,
+	COLOR_TEXT_BG_LIGHT,
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	STYLE_REGULAR,
+} from "../theme";
 
 const Credits: React.FC = () => {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const { width } = useWindowDimensions();
 	const { t } = useTranslation();
+	const [dark, setDark] = useState(false);
+	const [small, setSmall] = useState(true);
 	const [header, setHeader] = useState(true);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(() => setSmall(width < 600), [width]);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -29,43 +44,97 @@ const Credits: React.FC = () => {
 	);
 
 	return (
-		<SafeAreaView style={[theme?.main.container]}>
+		<SafeAreaView style={{ flex: 1 }}>
 			<ScrollView
 				onScroll={headerCallback}
 				scrollEventThrottle={100}
-				stickyHeaderIndices={[0]}
-				style={[theme?.credits.scroller]}>
+				stickyHeaderIndices={[0]}>
 				<Header opaque={header}></Header>
-				<View style={[theme?.credits.container]}>
-					<P style={[theme?.text.body]}>
+				<View
+					style={{
+						backgroundColor: dark
+							? COLOR_TEXT_BG_DARK
+							: COLOR_TEXT_BG_LIGHT,
+						width: small ? "98%" : "80%",
+						maxWidth: 800,
+						alignSelf: "center",
+						padding: 50,
+						borderRadius: 3,
+						marginBottom: 50,
+					}}>
+					<P
+						style={[
+							STYLE_REGULAR,
+							{
+								color: dark
+									? COLOR_TEXT_FG_DARK
+									: COLOR_TEXT_FG_LIGHT,
+							},
+						]}>
 						{t("credits.content")}
-						<A href="https://creativecommons.org/licenses/by/4.0/">
+						<A
+							style={{ color: COLOR_LINK }}
+							href="https://creativecommons.org/licenses/by/4.0/">
 							CC-BY
 						</A>{" "}
 						©️ {t("credits.name")}.
 					</P>
-					<P style={[theme?.text.body]}>
+					<P
+						style={[
+							STYLE_REGULAR,
+							{
+								color: dark
+									? COLOR_TEXT_FG_DARK
+									: COLOR_TEXT_FG_LIGHT,
+							},
+						]}>
 						{t("credits.third-party")}
 					</P>
-					<P style={[theme?.text.body]}>
+					<P
+						style={[
+							STYLE_REGULAR,
+							{
+								color: dark
+									? COLOR_TEXT_FG_DARK
+									: COLOR_TEXT_FG_LIGHT,
+							},
+						]}>
 						{t("credits.graphics1")}
-						<A href="https://thenounproject.com/">Noun Project </A>
+						<A
+							style={{ color: COLOR_LINK }}
+							href="https://thenounproject.com/">
+							Noun Project{" "}
+						</A>
 						{t("credits.graphics2")}
-						<A href="https://creativecommons.org/licenses/by/4.0/">
+						<A
+							style={{ color: COLOR_LINK }}
+							href="https://creativecommons.org/licenses/by/4.0/">
 							CC-BY
 						</A>{" "}
-						{t("credits.graphics3")}:
+						{t("credits.graphics3")}
+						{"\n"}
 						<UL>
 							<LI>
 								{/* eslint-disable-next-line jsx-a11y/alt-text */}
 								<Image
 									source={{
 										uri: "/credits/chef.svg",
-										...theme?.credits.image,
+										width: 256,
+										height: 256,
 									}}></Image>
-								<Text style={[theme?.text.body]}>
+								<Text
+									style={[
+										STYLE_REGULAR,
+										{
+											color: dark
+												? COLOR_TEXT_FG_DARK
+												: COLOR_TEXT_FG_LIGHT,
+										},
+									]}>
 									{t("credits.byline")}
-									<A href="https://thenounproject.com/susannanova/">
+									<A
+										style={{ color: COLOR_LINK }}
+										href="https://thenounproject.com/susannanova/">
 										Susannanova
 									</A>
 								</Text>
@@ -75,20 +144,41 @@ const Credits: React.FC = () => {
 								<Image
 									source={{
 										uri: "/credits/cat.svg",
-										...theme?.credits.image,
+										width: 256,
+										height: 256,
 									}}></Image>
-								<Text style={[theme?.text.body]}>
+								<Text
+									style={[
+										STYLE_REGULAR,
+										{
+											color: dark
+												? COLOR_TEXT_FG_DARK
+												: COLOR_TEXT_FG_LIGHT,
+										},
+									]}>
 									{t("credits.byline")}
-									<A href="https://thenounproject.com/mte/">
+									<A
+										style={{ color: COLOR_LINK }}
+										href="https://thenounproject.com/mte/">
 										m. turan ercan
 									</A>
 								</Text>
 							</LI>
 						</UL>
 					</P>
-					<P style={[theme?.text.body]}>
+					<P
+						style={[
+							STYLE_REGULAR,
+							{
+								color: dark
+									? COLOR_TEXT_FG_DARK
+									: COLOR_TEXT_FG_LIGHT,
+							},
+						]}>
 						{t("credits.tech")}
-						<A href="https://github.com/OzymandiasTheGreat/kitchen.tomasrav.me">
+						<A
+							style={{ color: COLOR_LINK }}
+							href="https://github.com/OzymandiasTheGreat/kitchen.tomasrav.me">
 							{t("credits.github")}
 						</A>
 						.
