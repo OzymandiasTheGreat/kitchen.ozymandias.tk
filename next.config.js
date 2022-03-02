@@ -20,12 +20,19 @@ module.exports = withPlugins([
 			},
 		},
 	],
-	withTM([
-		"@ozymandiasthegreat/react-native-markdown",
-		"recyclerlistview",
-		"@jsamr/react-native-li",
-		"react-native-web",
-	]),
+	[
+		withTM([
+			"@ozymandiasthegreat/react-native-markdown",
+			"recyclerlistview",
+			"@jsamr/react-native-li",
+			"react-native-web",
+		]),
+		{
+			typescript: {
+				ignoreBuildErrors: true,
+			},
+		},
+	],
 	[
 		withExpo,
 		{
