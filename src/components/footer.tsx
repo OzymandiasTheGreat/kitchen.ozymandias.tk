@@ -6,6 +6,7 @@ import Icon from "@mdi/react";
 import { mdiCopyright } from "@mdi/js";
 import { useTranslation, useSelectedLanguage } from "next-export-i18n";
 import {
+	COLOR_LINK,
 	COLOR_SITE_BG_DARK,
 	COLOR_TEXT_BG_DARK,
 	COLOR_TEXT_BG_LIGHT,
@@ -61,7 +62,7 @@ const BlogFooter: React.FC<{
 								style={[
 									STYLE_STRONG,
 									{
-										color: paragraphColor,
+										color: COLOR_LINK,
 										fontSize: 32,
 										textShadowColor: pagerShadowColor,
 										textShadowRadius: pagerShadowRadius,
@@ -80,6 +81,7 @@ const BlogFooter: React.FC<{
 								fontSize: 20,
 								textShadowColor: pagerShadowColor,
 								textShadowRadius: pagerShadowRadius,
+								paddingTop: 3,
 							},
 						]}>
 						{(page || 0) + 1} /{" "}
@@ -89,7 +91,7 @@ const BlogFooter: React.FC<{
 								pathname: `./${total}`,
 								query: { lang, ...query },
 							}}>
-							<A>{total}</A>
+							<A style={{ color: COLOR_LINK }}>{total}</A>
 						</Link>
 					</Text>
 					{(page || 0) + 1 !== total && (
@@ -103,7 +105,7 @@ const BlogFooter: React.FC<{
 								style={[
 									STYLE_STRONG,
 									{
-										color: paragraphColor,
+										color: COLOR_LINK,
 										fontSize: 32,
 										textShadowColor: pagerShadowColor,
 										textShadowRadius: pagerShadowRadius,
