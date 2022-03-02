@@ -1,13 +1,14 @@
-import { join } from "path";
 import fs from "fs/promises";
 import klaw from "klaw";
 import matter from "gray-matter";
 import { POSTSDIR } from "../../constants";
 import type { GetStaticProps } from "next";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
+	useColorScheme,
+	useWindowDimensions,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 	SafeAreaView,
@@ -19,13 +20,25 @@ import { A } from "@expo/html-elements";
 import NoSSR from "react-no-ssr";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-import useTheme from "../_theme";
 import { randInt } from "../../util/random";
+import {
+	COLOR_TEXT_BG_DARK,
+	COLOR_TEXT_BG_LIGHT,
+	COLOR_TEXT_FG_DARK,
+	COLOR_TEXT_FG_LIGHT,
+	STYLE_REGULAR,
+} from "../../theme";
 
 const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
-	const theme = useTheme();
+	const scheme = useColorScheme();
+	const { width } = useWindowDimensions();
 	const { lang } = useSelectedLanguage();
+	const [dark, setDark] = useState(false);
+	const [small, setSmall] = useState(true);
 	const [header, setHeader] = useState(true);
+
+	useEffect(() => setDark(scheme === "dark"), [scheme]);
+	useEffect(() => setSmall(width < 600), [width]);
 
 	const headerCallback = useCallback(
 		(ev: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -43,8 +56,29 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 				scrollEventThrottle={100}
 				stickyHeaderIndices={[0]}>
 				<Header opaque={header}></Header>
-				<View style={[theme?.tagcloud.container]}>
-					<View style={[theme?.tagcloud.style]}>
+				<View
+					style={{
+						flex: 1,
+						width: "100%",
+						alignItems: "center",
+						justifyContent: "center",
+						marginBottom: 50,
+					}}>
+					<View
+						style={{
+							backgroundColor: dark
+								? COLOR_TEXT_BG_DARK
+								: COLOR_TEXT_BG_LIGHT,
+							flexDirection: "row",
+							flexWrap: "wrap",
+							alignItems: "center",
+							justifyContent: "space-around",
+							width: small ? "98%" : "80%",
+							maxWidth: 600,
+							paddingVertical: 25,
+							paddingHorizontal: 50,
+							borderRadius: 3,
+						}}>
 						<NoSSR>
 							{Object.entries(tags)
 								.sort(() => randInt(-1, 1))
@@ -58,14 +92,17 @@ const Tags: React.FC<{ tags: Record<string, number> }> = ({ tags }) => {
 										}}>
 										<A
 											style={[
-												theme?.text.body,
-												theme?.tagcloud.tag,
+												STYLE_REGULAR,
+												{
+													color: dark
+														? COLOR_TEXT_FG_DARK
+														: COLOR_TEXT_FG_LIGHT,
+													fontSize: 10,
+													margin: 15,
+												},
 												{
 													fontSize:
-														(theme?.tagcloud.tag
-															.fontSize || 9) *
-														count *
-														0.75,
+														10 * count * 0.75,
 												},
 											]}>
 											{tag}
