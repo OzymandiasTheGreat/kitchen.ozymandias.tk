@@ -1,0 +1,48 @@
+{
+  "name": "kitchen.tomasrav.me",
+  "private": true,
+  "main": "expo-router/entry",
+  "version": "4.0.0",
+  "scripts": {
+    "start": "watchman watch-del . && expo start --clear",
+    "clean": "rm -rf .expo/ dist/ node_modules/ yarn.lock",
+    "export": "expo export -p web",
+    "deploy": "gh-pages -t -d dist --tag $npm_package_version --cname \"kitchen.tomasrav.me\"",
+    "predeploy": "yarn export",
+    "postinstall": "patch-package"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^14.0.2",
+    "@react-navigation/native": "^6.0.2",
+    "expo": "~51.0.22",
+    "expo-linking": "~6.3.1",
+    "expo-localization": "^15.0.3",
+    "expo-router": "~3.5.18",
+    "exponent-markdown": "^0.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.3",
+    "react-native-gesture-handler": "~2.16.1",
+    "react-native-reanimated": "~3.10.1",
+    "react-native-safe-area-context": "4.10.5",
+    "react-native-screens": "3.31.1",
+    "react-native-web": "~0.19.10",
+    "react-responsive": "^10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.45",
+    "babel-plugin-inline-import": "^3.0.0",
+    "gh-pages": "^6.1.1",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
+    "typescript": "~5.3.3"
+  },
+  "resolutions": {
+    "use-latest-callback": "0.1.9",
+    "vfile": "6.0.1"
+  }
+}

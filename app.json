@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "kitchen.tomasrav.me",
+    "slug": "kitchen_tomasrav_me",
+    "version": "4.0.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "automatic",
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "shortName": "Tomas Ravinskas' Food Blog"
+    },
+    "plugins": ["expo-router", "expo-localization"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
