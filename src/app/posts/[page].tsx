@@ -78,10 +78,12 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     error_message: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.heading,
     },
     error_cause: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.heading * 0.8,
     },
     scroll: {

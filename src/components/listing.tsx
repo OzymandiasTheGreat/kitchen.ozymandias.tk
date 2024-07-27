@@ -1,8 +1,8 @@
 import React from "react"
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import MDI from "@expo/vector-icons/MaterialCommunityIcons"
 import { Link } from "expo-router"
-import { usePages, type Content } from "@/hooks/usePages"
+import { type Content } from "@/hooks/usePages"
 import { useStrings } from "@/hooks/useStrings"
 import { createThemedStylesheet, useTheme } from "@/hooks/useTheme"
 
@@ -61,6 +61,7 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     title: {
       color: theme.colors.link,
+      fontFamily: theme.fonts.bodyBold,
       fontSize: theme.size.heading,
       fontWeight: "bold",
       textAlign: "center",
@@ -68,6 +69,7 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     date: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       textAlign: "center",
       width: "100%",
@@ -83,6 +85,7 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     page: {
       color: theme.colors.link,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       lineHeight: 24,
     },

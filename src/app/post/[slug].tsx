@@ -23,14 +23,26 @@ export default function PostPage() {
     : `${strings.title}`
   const elementStyles: ElementStyles = useMemo(
     () => ({
+      emphasis: {
+        fontFamily: theme.fonts.contentItalic,
+      },
+      strong: {
+        fontFamily: theme.fonts.contentBold,
+      },
       link: {
         color: theme.colors.link,
       },
       paragraph: {
+        fontFamily: theme.fonts.contentRegular,
         fontSize: theme.size.content,
       },
       heading: {
+        fontFamily: theme.fonts.bodyBold,
         fontSize: theme.size.heading * 0.8,
+        fontWeight: "bold",
+      },
+      thematicBreak: {
+        width: "100%",
       },
       table: {
         alignSelf: "flex-start",
@@ -45,6 +57,7 @@ export default function PostPage() {
         flex: 1,
         padding: theme.spacing.small,
         borderColor: theme.colors.text,
+        fontFamily: theme.fonts.contentRegular,
       },
     }),
     [theme],
@@ -99,6 +112,17 @@ export default function PostPage() {
               </Link>
             </Text>
           )}
+          <View style={styles.comments}>
+            <script
+              src="https://utteranc.es/client.js"
+              // @ts-ignore
+              repo="OzymandiasTheGreat/kitchen.tomasrav.me"
+              label="comment"
+              theme="preferred-color-scheme"
+              crossOrigin="anonymous"
+              async
+            ></script>
+          </View>
         </View>
         <Footer />
       </ScrollView>
@@ -127,10 +151,12 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     error_message: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.heading,
     },
     error_cause: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.heading * 0.8,
     },
     post: {
@@ -147,6 +173,7 @@ const useStyle = createThemedStylesheet((theme) =>
     meta: {},
     title: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyBold,
       fontSize: theme.size.heading,
       fontWeight: "bold",
       textAlign: "center",
@@ -161,25 +188,33 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     author: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       opacity: 0.6,
     },
     date: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       opacity: 0.6,
     },
     markdown: {
-      flex: 1,
+      flexGrow: 1,
       color: theme.colors.text,
+      fontFamily: theme.fonts.contentRegular,
     },
     source: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       opacity: 0.6,
     },
     source_link: {
       color: theme.colors.link,
+    },
+    comments: {
+      flexGrow: 1,
+      minHeight: 256,
     },
   }),
 )

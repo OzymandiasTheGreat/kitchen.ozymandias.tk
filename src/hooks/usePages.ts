@@ -45,11 +45,18 @@ export const usePages = () => {
   const [locale] = useLocale()
   const index = useIndex()
   const strings = useStrings()
-  const filename = `${locale}-` + `${index}`.padStart(4, "0") + ".json"
+  const filename = index >= 0 ? `${locale}-` + `${index}`.padStart(4, "0") + ".json" : null
 
   useEffect(() => {
     ;(async () => {
       setLoading(true)
+
+      if (!filename) {
+        setError(ERROR_404(strings))
+        setContent(DEFAULT_CONTENT)
+        setLoading(false)
+        return
+      }
 
       try {
         const response = await fetch(`/content/${filename}`)

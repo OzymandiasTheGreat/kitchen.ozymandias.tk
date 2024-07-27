@@ -2,23 +2,23 @@
   "name": "kitchen.tomasrav.me",
   "private": true,
   "main": "expo-router/entry",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "scripts": {
     "start": "watchman watch-del . && expo start --clear",
     "clean": "rm -rf .expo/ dist/ node_modules/ yarn.lock",
     "export": "expo export -p web",
     "deploy": "gh-pages -t -d dist --tag $npm_package_version --cname \"kitchen.tomasrav.me\"",
-    "predeploy": "yarn export",
+    "predeploy": "node bin/index-content.js && yarn export",
     "postinstall": "patch-package"
   },
-  "jest": {
-    "preset": "jest-expo"
-  },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/merriweather": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
     "buffer": "^6.0.3",
     "expo": "~51.0.22",
+    "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",
     "expo-localization": "^15.0.3",
     "expo-router": "~3.5.18",
@@ -37,7 +37,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
-    "babel-plugin-inline-import": "^3.0.0",
     "gh-pages": "^6.1.1",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",

@@ -19,6 +19,14 @@ interface Theme {
     content: number
     container: number
   }
+  fonts: {
+    bodyBold: string
+    bodyRegular: string
+    contentBold: string
+    contentBoldItalic: string
+    contentItalic: string
+    contentRegular: string
+  }
 }
 
 export const ColorSchemeContext = createContext<ColorSchemeName>("light")
@@ -56,6 +64,14 @@ const generateTheme = (options: { scheme: ColorSchemeName; phone: boolean; table
       tagline: options.phone ? 12 : 14,
       content: options.phone ? 16 : 18,
       container: options.phone ? 380 : 720,
+    },
+    fonts: {
+      bodyBold: "Inter_700Bold",
+      bodyRegular: "Inter_400Regular",
+      contentBold: "Merriweather_700Bold",
+      contentBoldItalic: "Merriweather_700Bold_Italic",
+      contentItalic: "Merriweather_400Regular_Italic",
+      contentRegular: "Merriweather_400Regular",
     },
   }
   return theme

@@ -30,6 +30,7 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     text: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: theme.size.tagline,
       textAlign: "center",
     },

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import {
   useColorScheme as useSystemColorScheme,
+  ActivityIndicator,
   type ColorSchemeName,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -11,6 +11,14 @@ import {
 import { DarkTheme as DefaultDarkTheme, DefaultTheme as DefaultLightTheme, ThemeProvider } from "@react-navigation/native"
 import MDI from "@expo/vector-icons/MaterialCommunityIcons"
 import { Buffer } from "buffer"
+import { useFonts } from "expo-font"
+import { Inter_700Bold, Inter_400Regular } from "@expo-google-fonts/inter"
+import {
+  Merriweather_700Bold,
+  Merriweather_700Bold_Italic,
+  Merriweather_400Regular_Italic,
+  Merriweather_400Regular,
+} from "@expo-google-fonts/merriweather"
 import { useLocales } from "expo-localization"
 import { usePathname, useRouter, Stack } from "expo-router"
 import Head from "expo-router/head"
@@ -47,6 +55,15 @@ function Root() {
   const router = useRouter()
   const pathname = usePathname()
 
+  const [loaded, error] = useFonts({
+    Inter_700Bold,
+    Inter_400Regular,
+    Merriweather_700Bold,
+    Merriweather_700Bold_Italic,
+    Merriweather_400Regular_Italic,
+    Merriweather_400Regular,
+  })
+
   const isIndex = useMemo(() => pathname === "/", [pathname])
   const toIndex = useCallback(() => router.navigate("/"), [router])
   const goBack = useCallback(() => router.back(), [router])
@@ -59,6 +76,16 @@ function Root() {
   const nextLocale = useMemo(() => Locales.slice(Locales.indexOf(locale)).find((l) => l !== locale) ?? Locales[0], [locale])
   const switchLocale = useCallback(() => setLocale(nextLocale), [nextLocale])
 
+  if (!loaded && !error) {
+    return (
+      <SafeAreaView style={styles.root}>
+        <View style={styles.loader}>
+          <ActivityIndicator color={theme.colors.link} size={256} />
+        </View>
+      </SafeAreaView>
+    )
+  }
+
   return (
     <Stack
       initialRouteName="index"
@@ -68,6 +95,9 @@ function Root() {
         headerBackVisible: false,
         title,
         headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontFamily: theme.fonts.bodyRegular,
+        },
         headerLeft({ canGoBack }) {
           return (
             <View style={styles.header}>
@@ -143,6 +173,16 @@ export default function RootLayout() {
 
 const useStyle = createThemedStylesheet((theme) =>
   StyleSheet.create({
+    root: {
+      flex: 1,
+    },
+    loader: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.colors.content,
+      opacity: 0.6,
+    },
     header: {
       flex: 1,
       flexDirection: "row",
@@ -155,6 +195,7 @@ const useStyle = createThemedStylesheet((theme) =>
     },
     lang: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
       fontSize: 22,
       lineHeight: 64,
     },

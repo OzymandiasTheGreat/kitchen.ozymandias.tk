@@ -1,26 +1,36 @@
-import { Link } from "expo-router"
 import { StyleSheet, Text, View } from "react-native"
+import { useFocusEffect } from "expo-router"
+import { useStrings } from "@/hooks/useStrings"
+import { createThemedStylesheet } from "@/hooks/useTheme"
+import { useTitle } from "@/hooks/useTitle"
 
 export default function NotFoundScreen() {
+  const styles = useStyle()
+  const strings = useStrings()
+  const [_, setTitle] = useTitle()
+
+  useFocusEffect(() => setTitle(`${strings.err404.title} | ${strings.title}`))
+
   return (
-    <View style={styles.container}>
-      <Text>This screen doesn't exist.</Text>
-      <Link href="/" style={styles.link}>
-        <Text>Go to home screen!</Text>
-      </Link>
+    <View style={styles.root}>
+      <Text style={styles.text}>{strings.err404.message}</Text>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-})
+const useStyle = createThemedStylesheet((theme) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.colors.content,
+      opacity: 0.6,
+    },
+    text: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.bodyRegular,
+      fontSize: theme.size.heading,
+    },
+  }),
+)
