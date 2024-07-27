@@ -13,6 +13,7 @@ web-build/
 # macOS
 .DS_Store
 
+.vscode/
 yarn.lock
 package-lock.json
 

@@ -1,0 +1,16 @@
+{
+  "title": "Tomo Ravinsko Maisto Blog'as",
+  "welcome": "Sveiki atvykę į mano Maisto Blog'ą! Mano vardas Tomas Ravinskas, ir čia aš dalinuosi savo mėgiamiausiais receptais.",
+  "next": "Kitas Puslapis",
+  "prev": "Ankstesnis Puslapis",
+  "page": "Puslapis",
+  "edited": "Redaguota",
+  "loading": "Įkeliama...",
+  "source": "Turinio šaltinis",
+  "error": "Klaida",
+  "err404": {
+    "title": "404 Nerasta",
+    "message": "Puslapis nerastas. Patikrinkite adresą ir bandykite dar kartą."
+  },
+  "errServer": "Serveryje įvyko klaida. Klaidos kodas: $1"
+}
