@@ -1,0 +1,77 @@
+{
+  "last": false,
+  "content": [
+    {
+      "title": "Paprikų Sriuba",
+      "slug": "bell-pepper-soup",
+      "published": "2024-07-26T07:34:13+0300",
+      "filename": "bell-pepper-soup.md"
+    },
+    {
+      "title": "Kūčiukai",
+      "slug": "kuciukai",
+      "published": "2020-12-30T20:40:19+0300",
+      "edited": "2024-07-24T09:48:13+0300",
+      "filename": "kuciukai.md"
+    },
+    {
+      "title": "Pirožkos (Pyragėliai su Mėsa)",
+      "slug": "pirozhki",
+      "published": "2020-08-01T10:17:37+0300",
+      "edited": "2024-07-24T09:09:13+0300",
+      "filename": "pirozhki.md"
+    },
+    {
+      "title": "Šaltibarščiai",
+      "slug": "cold-borscht",
+      "published": "2020-08-01T09:37:01+0300",
+      "edited": "2024-07-24T07:11:13+0300",
+      "filename": "cold-borscht.md"
+    },
+    {
+      "title": "Tinginys",
+      "slug": "tinginys",
+      "published": "2020-08-01T07:59:23+0300",
+      "edited": "2024-07-24T07:53:13+0300",
+      "filename": "tinginys.md"
+    },
+    {
+      "title": "Morengai",
+      "slug": "meringues",
+      "published": "2020-08-01T07:59:03+0300",
+      "edited": "2024-07-24T08:35:13+0300",
+      "source": "Sena receptų knyga, kurią mano sesuo rado Vokietijoje",
+      "filename": "meringues.md"
+    },
+    {
+      "title": "Kakavos Kokybė",
+      "slug": "cacao-quality",
+      "published": "2020-08-01T07:44:36+0300",
+      "edited": "2024-07-24T05:17:13+0300",
+      "source": "https://food52.com/blog/9521-how-to-identify-good-cocoa-powder-and-not-so-good",
+      "filename": "cacao-quality.md"
+    },
+    {
+      "title": "Cannelloni",
+      "slug": "cannelloni",
+      "published": "2020-08-01T07:36:14+0300",
+      "edited": "2024-07-24T05:36:13+0300",
+      "filename": "cannelloni.md"
+    },
+    {
+      "title": "Japoniško stiliaus ryžiai keptuvėje",
+      "slug": "japanese-style-rice",
+      "published": "2020-08-01T06:48:06+0300",
+      "edited": "2024-07-24T08:31:13+0300",
+      "source": "http://justhungry.com/how-cook-perfect-rice-in-frying-pan-fast-and-foolproof",
+      "filename": "japanese-style-rice.md"
+    },
+    {
+      "title": "Farširuoti Kiaušiniai (Britišku Stiliumi)",
+      "slug": "deviled-eggs",
+      "published": "2020-08-01T06:46:12+0300",
+      "edited": "2024-07-24T08:14:13+0300",
+      "filename": "deviled-eggs.md"
+    }
+  ]
+}
